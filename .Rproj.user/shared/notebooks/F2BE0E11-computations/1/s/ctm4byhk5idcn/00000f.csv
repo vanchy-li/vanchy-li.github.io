@@ -1,0 +1,4 @@
+"0","#| label: load-packages"
+"0","#| echo: false"
+"0",""
+"0","library(ggplot2)"

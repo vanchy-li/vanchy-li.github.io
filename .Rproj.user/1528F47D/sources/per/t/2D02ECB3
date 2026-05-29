@@ -1,0 +1,31 @@
+{
+    "id": "2D02ECB3",
+    "path": "~/Downloads/index.qmd",
+    "project_path": null,
+    "type": "quarto_markdown",
+    "hash": "2346838914",
+    "contents": "",
+    "dirty": false,
+    "created": 1772938293928.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "285,0",
+        "scrollLine": "19",
+        "rmdVisualMode": "false",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "1",
+        "rmdVisualModeLocation": "408:677.272705078125",
+        "rmdVisualCollapsedChunks": ""
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1773012687,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1773012687826,
+    "read_only": false,
+    "read_only_alternatives": []
+}

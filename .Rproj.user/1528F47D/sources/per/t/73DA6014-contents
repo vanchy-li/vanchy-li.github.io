@@ -1,0 +1,16 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Vanchy Li"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: teaching/intro-quant-2026/index.qmd
+        text: Intro to Quant
+
+format:
+  html:
+    theme: cosmo

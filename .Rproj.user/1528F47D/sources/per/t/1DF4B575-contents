@@ -1,0 +1,131 @@
+---
+title: "Syllabus"
+author: "Vanchy Li"
+editor: visual
+---
+
+# Locations and Times
+
+Lecture & Lab: Monday & Wednesday 12:00 - 15:00, Zoom
+
+Instructor: Vanchy Li
+
+Contact: vali\@clarku.edu
+
+Office: Geography Building 1st Floor, EORS
+
+Office Hours: Wednesday 9:00-12:00
+
+# Course Description
+
+GEOG 110/311 Introduction to Quantitative Methods is an introductory course in statistics that familiarizes students with basic statistical concepts and methods essential for research in geography, environmental science, and many other disciplines. The course emphasizes the development of computer skills – in Microsoft Excel, R, and RStudio – through analyses of diverse datasets. Students will gain proficiency interpreting statistical theory and data, managing datasets, and performing common statistical analysis procedures, including: univariate analysis, hypothesis testing, confidence intervals, estimation of means, difference in means, association, and regression. Throughout the course, students will perform statistical analyses, interpret results based on statistical theory, and present results in written and oral forms.
+
+# Prerequisites and Audience
+
+This course is an introduction to applied statistical analysis that precedes further advanced study through Clark University courses including GEOG 247/347: Intermediate Quantitative Methods in Geography and GEOG 260: Quantitative Modeling, among others.
+
+Prerequisites: There are no prerequisites for the course; however, previous experience with algebra, pre-calculus, or calculus is recommended. Supplemental review materials will be provided as needed, and students should not hesitate to ask for additional review resources at any time during the course.
+
+-   Undergraduate students receive credit for a Formal Analysis course.
+
+-   Undergraduate geography majors receive credit for a Skills course.
+
+-   Undergraduate environmental science majors complete a required course in Mathematics or Basic Skills, depending upon the focal area of the major.
+
+-   Graduate students receive credit by enrolling in course number: GEOG 311.
+
+# Course Objective and Learning Goals
+
+The main objective of this course is that you finish the semester knowing the answer to this question:
+
+**How can we use statistics to better understand peril, polls, and predictions?**
+
+The answer to this question is found along the way as the course uses real-world examples to illustrate key concepts. For example, we use US presidential election polling to illustrate the concept of margin of errors, bias, and why polls are usually (but not always—see previous point about bias) not as “wrong” as people often think.
+
+The learning goals of the course are as follows:
+
+1.  Recognize the importance of data collection, identify limitations in data collection methods and other sources of statistical bias, and determine their implications and how they affect the scope of inference.
+
+2.  Use statistical software to summarize data, numerically and visually, and to perform statistical data analyses.
+
+3.  Have a conceptual understanding of the unified nature of statistical inference.
+
+4.  Apply estimation and testing methods to analyze single variables or the relationship between two variables to understand natural phenomena and make data-based decisions.
+
+5.  Interpret results of statistical analyses correctly, effectively, and in context, without relying on statistical jargon.
+
+6.  Critique data-based claims and evaluate data-based decisions.
+
+# Material and Communications
+
+**Communications**: We will conduct class communications and share all materials (syllabus, course schedule, lecture slides, problem sets, lab assignments, and other materials) via Canvas and Email.
+
+**Materials**: The course uses materials [OpenIntro Statistics](https://www.openintro.org/book/os/), an online open-source platform developed and curated by a network of academics and analysts. The website – a comprehensive (and FREE) resource – includes a textbook, labs, videos, exercises, forums, data, and other supplemental resources. As a student and lecturer, I fully support efforts to make academic knowledge production and higher education an open and free resource. In my opinion, OpenIntro Statistics is exemplary of such efforts.
+
+**Required Textbook**: [OpenIntro Statistics Textbook](https://www.openintro.org/book/os/) Diez, D.M., M. Cetinkaya-Rundel, and C.D. Barr. 2019. OpenIntro Statistics. 4th Edition.
+
+Open Statistics can also be ordered through the [Clark University Online Bookstore](https://www.textbookx.com)
+
+**Software**: We will examine data and conduct statistical analyses in Microsoft Excel and RStudio. For personal computers, the free desktop version of [R and RStudio](https://posit.co/download/rstudio-desktop/) should be downloaded and installed on your laptop. Additionally, a free student version of Microsoft Office suite can be accessed through [Clark University's IT Department](https://www.clarku.edu/information-technology-services/).
+
+**Other Resources**: Additional resources for the course, including links to websites, tutorials, videos, and supplemental articles will be made available via Canvas.
+
+**University Computer Labs**: Several computer labs at Clark University are available for you to continue coursework outside of class. The following three locations are available: (1) the computer cluster adjacent to the Clark ITS Helpdesk, (2) Computer Lab 170D on the first floor of the Academic Commons, and (3) the Goddard Teaching Lab on the second floor of the Goddard Library.
+
+# Assessment
+
+Grades for this course will be based on the following components:
+
+| Content             | Percent |
+|---------------------|---------|
+| 9 Lab Assignments   | 27%     |
+| 11 In-class quizzes | 33%     |
+| 1 Final Project     | 20%     |
+| 5 Problem Sets      | 20%     |
+| Total               | 100%    |
+
+**Labs: 27%** 9 labs \@ 3% per lab. Practicing computational statistics is a fundamental component of the course, and it will provide you with the opportunity to apply concepts and techniques introduced during the course. Labs will be conducted in RStudio, and all lab assignments and data will be made available via Canvas. In general, you will have one week to
+
+# Time Commitment
+
+The course requires a minimum of 100 hrs of work by each student over the six-week summer semester. The breakdown of this workload is detailed below:
+
+-   Lectures: 1.5 hrs per class \* 15 class sessions = 22.5 hrs
+-   Labs: 1.5 hrs per lab \* 9 lab sessions = 13.5 hrs
+-   Readings/Assignments = 7 hrs per week \* 6 weeks = 42hrs
+-   Final Project: 22 hrs per project \* 1 project = 22 hrs
+
+Students learn and work in diverse ways, with differing styles, and at different speeds. The course workload detailed above approximates the time commitment for the course; but some students will require more time, and some less, depending upon a variety of factors. If you find that you are spending substantially more personal time than listed above and are, nonetheless, having difficulty understanding the material or completing assignments, then you should meet with the instructor and/or TA on a regular basis for suggestions and guidance. We do not want anyone to fall-behind in the course as it will become increasingly difficult to catch-up.
+
+# Policies
+
+# Syllabus Disclaimer
+
+# Course Schedule
+
+| Date | Time | Course Topic | Readings | Assignments | Deadlines |
+|-----------|-----------|-----------------|-----------|-----------|-----------|
+| 5/19 (Tuesday) | 12:00 - 13:15 | Introduction to the Course |  |  |  |
+| 5/19 (Tuesday) | 13:30 - 15:00 | Data Basics, collection, and sampling | 1-1.4 | In-class quiz 1 |  |
+| 5/21 (Thursday) | 12:00 - 13:15 | Numerical Data and Categorical Data | 2.1-2.2 | In-class quiz 2 |  |
+| 5/21 (Thursday) | 13:30 - 15:00 | Lab 1 & 2: Introduction to R & RStudio/Data |  | problem set 1 |  |
+| 5/26 (Tuesday) | 12:00 - 13:15 | Defining Probability | 3.1 |  |  |
+| 5/26 (Tuesday) | 13:30 - 15:00 | Conditional Probability | 3.2-3.3 | In-class quiz 3 |  |
+| 5/28 (Thursday) | 12:00 - 13:15 | Random Variables | 3.4-3.5 | In-class quiz 4 | Lab 1 & 2 |
+| 5/28 (Thursday) | 13:30 - 15:00 | Lab 3: Probability |  | problem set 2 |  |
+| 6/2 (Tuesday) | 12:00 - 13:15 | Normal Probability Distributions | 4.1-4.2 | In-class quiz 5 |  |
+| 6/2 (Tuesday) | 13:30 - 15:00 | Lab 4: Distributions |  |  |  |
+| 6/4 (Thursday) | 12:00 - 13:15 | Discrete Probability Distributions | 4.3-4.5 |  |  |
+| 6/4 (Thursday) | 13:30 - 15:00 | Foundations for Inference and Central Limit Theorem | 5.1 | In-class quiz 6 & problem set 3 | Lab 3 |
+| 6/9 (Tuesday) | 12:00 - 13:15 | Confidence Intervals | 5.2 |  |  |
+| 6/9 (Tuesday) | 13:30 - 15:00 | Hypothesis testing | 5.3 | In-class quiz 7 | Lab 4 |
+| 6/11 (Thursday) | 12:00 - 13:15 | Lab 5 & 6: Introduction to Inference / Confidence Levels |  | problem set 4 |  |
+| 6/11 (Thursday) | 13:30 - 15:00 | Inference for Categorical Data | 6.1-6.2 | In-class quiz 8 |  |
+| 6/16 (Tuesday) | 12:00 - 13:15 | Goodness of Fit (Chi-Squared) | 6.3-6.4 | In-class quiz 9 |  |
+| 6/16 (Tuesday) | 13:30 - 15:00 | Lab 7: Inference for Categorical Data |  |  |  |
+| 6/18 (Thursday) | 12:00 - 13:15 | Inference for Numerical Data | 7.1-7.3 | In-class quiz 10 & problem set 5 | Lab 5 & 6 |
+| 6/18 (Thursday) | 13:30 - 15:00 | Lab 8: Inference for Numerical Data |  |  |  |
+| 6/23 (Tuesday) | 12:00 - 13:15 | Linear Regression and More | 8.1 - 8.4 | In-class quiz 11 |  |
+| 6/23 (Tuesday) | 13:30 - 15:00 | Lab 9: Linear Regression |  |  | Lab 7 |
+| 6/25 (Thursday) | 12:00 - 13:15 | Final Project Presentation 1 |  |  |  |
+| 6/25 (Thursday) | 13:30 - 15:00 | Final Project Presentation 2 |  |  | Lab 8 & 9 |

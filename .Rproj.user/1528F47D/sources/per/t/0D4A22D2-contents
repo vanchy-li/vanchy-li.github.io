@@ -1,0 +1,25 @@
+---
+title: "Lecture 01 — Why Statistics?"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    incremental: true
+    center: false
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+Welcome
+Intro to Quantitative Methods
+Vanchy Li
+
+🎮 2-minute mission (vote)
+You advise a city mayor.
+Early signals suggest a possible outbreak.
+Choose one:
+Act now
+Wait 1 week
