@@ -53,8 +53,8 @@ nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
 }
 .eyebrow { color: var(--lime); margin-bottom: 2rem; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(240px, .55fr); gap: 6vw; align-items: end; }
-h1 { margin: 0; font-size: clamp(3rem, 6.3vw, 7rem); line-height: .94; letter-spacing: -.075em; font-weight: 500; }
-h1 em { color: var(--lime); font-style: normal; }
+h1 { margin: 0; font-size: clamp(3rem, 6.3vw, 7rem); line-height: .96; letter-spacing: -.065em; font-weight: 500; }
+h1 em { display: inline-block; margin-top: .24em; color: var(--lime); font-style: normal; }
 .hero-copy { max-width: 660px; margin: 2.2rem 0 0; color: #c6d0cb; font-size: clamp(1rem, 1.3vw, 1.25rem); }
 .hero-aside { padding-bottom: .5rem; }
 .aside-label { color: #82958e; }
