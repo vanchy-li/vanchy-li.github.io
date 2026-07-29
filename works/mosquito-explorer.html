@@ -1,176 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mosquito Oviposition Explorer</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore weekly mosquito oviposition and its environmental context in San Pedro de Jujuy, Argentina.">
+  <title>Mosquito Explorer — San Pedro de Jujuy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/mosquito-explorer.css">
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-      color: #222;
-    }
-
-    h1 {
-      margin-bottom: 10px;
-    }
-
-    h2 {
-      margin-top: 40px;
-      margin-bottom: 15px;
-    }
-
-    .description {
-      font-size: 16px;
-      line-height: 1.5;
-      color: #444;
-      margin-bottom: 25px;
-    }
-
-    .controls {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    label {
-      font-weight: 600;
-    }
-
-    select,
-    input {
-      padding: 6px;
-      font-size: 14px;
-      margin-left: 6px;
-    }
-
-    .note {
-      color: #555;
-      font-size: 15px;
-      margin-bottom: 15px;
-    }
-
-    #plot {
-      width: 100%;
-      height: 600px;
-    }
-
-    .six-panel-controls {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .six-panel-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      width: 100%;
-    }
-
-    .mini-plot {
-      height: 320px;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-      padding: 8px;
-      background: #fff;
-    }
-
-    @media (max-width: 900px) {
-      .six-panel-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .six-panel-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .mini-plot {
-        height: 360px;
-      }
-    }
-  </style>
 </head>
-
 <body>
-  <h1>Mosquito Oviposition Explorer</h1>
+  <a class="skip-link" href="#explore">Skip to explorer</a>
 
-  <p class="description">
-    Explore weekly mosquito oviposition dynamics and compare egg counts with selected environmental variables.
-  </p>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Mosquito Explorer home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>Mosquito Explorer</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#study-area">Study area</a>
+      <a href="#explore">Three layers</a>
+      <a href="#methods">Methods</a>
+    </nav>
+    <span class="dataset-badge"><span></span> 2022–2024 study data</span>
+  </header>
 
-  <div class="controls">
-    <label>
-      Environmental variable:
-      <select id="env-variable"></select>
-    </label>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">SAN PEDRO DE JUJUY · ARGENTINA · WEEKLY SURVEILLANCE</div>
+      <div class="hero-grid">
+        <div>
+          <h1>One mosquito signal.<br><em>Three scales of time.</em></h1>
+          <p class="hero-copy">Separate the broad oviposition pattern from between-season anomalies and short-term weekly fluctuations. Each layer asks a different question of the same 106-week surveillance record.</p>
+        </div>
+        <div class="hero-aside">
+          <p class="aside-label">OBSERVATION WINDOW</p>
+          <p class="aside-value" id="study-window">Loading…</p>
+        </div>
+      </div>
+      <div class="hero-rule"></div>
+      <div class="stats" aria-live="polite">
+        <article><span class="stat-label">MONITORED WEEKS</span><strong id="stat-weeks">—</strong><small>with ovitrap observations</small></article>
+        <article><span class="stat-label">PEAK EGG RATE</span><strong id="stat-peak">—</strong><small id="stat-peak-date">mean eggs / trap</small></article>
+        <article><span class="stat-label">ACTIVE TRAPS</span><strong id="stat-traps">34</strong><small>weekly sensor network</small></article>
+        <article><span class="stat-label">CLIMATE RECORD</span><strong id="stat-climate">—</strong><small>weekly environmental context</small></article>
+      </div>
+    </section>
 
-    <label>
-      Lag weeks:
-      <input id="lag-slider" type="range" min="0" max="8" value="0" />
-      <span id="lag-value">0</span>
-    </label>
-  </div>
+    <section class="study-area section-shell" id="study-area">
+      <div class="section-heading">
+        <div>
+          <span class="section-number">STUDY AREA</span>
+          <h2>34 ovitraps across<br>San Pedro de Jujuy</h2>
+        </div>
+        <p>The surveillance network spans the urban study area in Jujuy Province, northwestern Argentina. Select a marker to identify an individual ovitrap.</p>
+      </div>
+      <div class="map-card">
+        <div id="trap-map" class="trap-map" aria-label="Interactive map of 34 ovitrap locations"></div>
+        <div class="map-caption">
+          <div><span class="map-symbol trap"></span><b>34 ovitraps</b><small>weekly egg collection</small></div>
+          <div><span class="map-symbol boundary"></span><b>Study boundary</b><small>San Pedro urban area</small></div>
+          <p>Coordinates are shown from the study shapefiles supplied with the project.</p>
+        </div>
+      </div>
+    </section>
 
-  <div id="correlation" class="note"></div>
+    <section class="explorer section-shell" id="explore">
+      <div class="section-heading">
+        <div>
+          <span class="section-number">THE ANALYTICAL FRAMEWORK</span>
+          <h2>Explore three temporal layers</h2>
+        </div>
+        <p>Move between layers without mixing their interpretations. Raw seasonal correspondence, departures from expected seasonality, and adjusted short-term effects answer complementary questions.</p>
+      </div>
 
-  <h2>Selected Variable Comparison</h2>
-  <div id="plot"></div>
+      <div class="layer-tabs" role="tablist" aria-label="Analysis layers">
+        <button id="tab-overall" role="tab" aria-selected="true" aria-controls="panel-overall" data-layer="overall">
+          <span>Layer 1</span><b>Overall pattern</b><small>Seasonal & between-season</small>
+        </button>
+        <button id="tab-anomaly" role="tab" aria-selected="false" aria-controls="panel-anomaly" data-layer="anomaly" tabindex="-1">
+          <span>Layer 2</span><b>Seasonal anomalies</b><small>Departures from expected</small>
+        </button>
+        <button id="tab-short" role="tab" aria-selected="false" aria-controls="panel-short" data-layer="short" tabindex="-1">
+          <span>Layer 3</span><b>Short-term association</b><small>Temporally adjusted</small>
+        </button>
+      </div>
 
-  <h2>Six-panel Environmental Overview</h2>
+      <section id="panel-overall" class="layer-panel" role="tabpanel" aria-labelledby="tab-overall">
+        <div class="layer-intro">
+          <div><span class="layer-label">LAYER 1 · NB-GLM</span><h3>What tracks the broad timing and magnitude of oviposition?</h3></div>
+          <p>Explore raw weekly values and Spearman cross-correlations. The final negative-binomial model adjusts for valid-trap effort and combines the strongest complementary predictors.</p>
+        </div>
+        <div class="control-bar two-controls">
+          <label><span>Environmental predictor</span><select id="overall-variable" aria-label="Overall-pattern predictor"></select></label>
+          <label class="lag-control">
+            <span>Environmental lead <output id="overall-lag-value" for="overall-lag">0 weeks</output></span>
+            <input id="overall-lag" type="range" min="0" max="6" value="0" step="1">
+            <span class="range-labels"><i>Same week</i><i>6 weeks prior</i></span>
+          </label>
+        </div>
+        <div class="chart-card">
+          <div class="chart-meta">
+            <div><span class="dot egg"></span><b>Mosquito egg rate</b><small>mean eggs per valid trap</small></div>
+            <div><span class="dot env"></span><b id="overall-signal-label">Environmental predictor</b><small id="overall-signal-unit">weekly value</small></div>
+            <div class="association-card"><span>SPEARMAN ρ</span><strong id="overall-rho">—</strong><small id="overall-n">valid paired weeks</small></div>
+          </div>
+          <div id="overall-plot" class="main-plot" aria-label="Overall-pattern time series"></div>
+          <p class="chart-footnote">Lag 0 is the egg-collection week. Lags 1–6 represent conditions one to six weeks before collection.</p>
+        </div>
+        <div class="results-grid">
+          <article class="takeaway-card"><span>MANUSCRIPT FINDING</span><strong>Vapor pressure was the strongest raw correlate.</strong><p>Same-week vapor pressure reached ρ = 0.88 in the explorer dataset and remained comparatively high across the tested lag window.</p></article>
+          <article class="model-card">
+            <div><span>FINAL MODEL · M6</span><strong>66.7%</strong><small>null deviance explained</small></div>
+            <p>Mean temperature + 3-week mean vapor pressure + interaction + SSTA + NDVI</p>
+          </article>
+        </div>
+        <div class="prediction-block">
+          <div class="subsection-heading">
+            <div><span class="layer-label">FINAL M6 MODEL · IN-SAMPLE FIT</span><h3>Observed vs. NB-GLM fitted oviposition</h3></div>
+            <p>The fitted rate uses the manuscript’s final coefficients for mean temperature, three-week vapor pressure, their interaction, Niño 3.4 SSTA, and NDVI.</p>
+          </div>
+          <div class="chart-card prediction-card">
+            <div class="chart-meta">
+              <div><span class="dot egg"></span><b>Observed egg rate</b><small>mean eggs per valid trap</small></div>
+              <div><span class="dot prediction"></span><b>NB-GLM fitted rate</b><small>M6 in-sample prediction</small></div>
+              <div class="association-card"><span>PEARSON r</span><strong id="prediction-r">—</strong><small id="prediction-fit">106 modeled weeks</small></div>
+            </div>
+            <div id="prediction-plot" class="main-plot prediction-plot" aria-label="Observed and NB-GLM predicted oviposition"></div>
+            <p class="chart-footnote">The fitted trajectory is an in-sample model result, not an out-of-sample forecast. The manuscript reports Pearson r = 0.80 and SSE-based R² = 0.432.</p>
+          </div>
+        </div>
+      </section>
 
-  <div class="six-panel-controls">
-    <label>
-      Air temperature:
-      <select id="air-temp-choice">
-        <option value="temperature_min">Minimum</option>
-        <option value="temperature">Mean</option>
-        <option value="temperature_max">Maximum</option>
-      </select>
-    </label>
+      <section id="panel-anomaly" class="layer-panel" role="tabpanel" aria-labelledby="tab-anomaly" hidden>
+        <div class="layer-intro">
+          <div><span class="layer-label">LAYER 2 · GAUSSIAN REGRESSION</span><h3>What aligns with departures from the expected seasonal pattern?</h3></div>
+          <p>Egg anomalies use the two-year study-period monthly pattern. Local climate anomalies use 1991–2020 reference values; NDVI uses 2014–2020. Associations are exploratory.</p>
+        </div>
+        <div class="control-bar anomaly-controls">
+          <label><span>Anomaly predictor</span><select id="anomaly-variable" aria-label="Anomaly predictor"></select></label>
+          <fieldset>
+            <legend>Time scale</legend>
+            <div class="segmented">
+              <input type="radio" name="anomaly-scale" id="anomaly-weekly" value="weekly" checked>
+              <label for="anomaly-weekly">Weekly</label>
+              <input type="radio" name="anomaly-scale" id="anomaly-monthly" value="monthly">
+              <label for="anomaly-monthly">Monthly sensitivity</label>
+            </div>
+          </fieldset>
+          <label class="lag-control">
+            <span>Environmental lead <output id="anomaly-lag-value" for="anomaly-lag">0 weeks</output></span>
+            <input id="anomaly-lag" type="range" min="0" max="8" value="0" step="1">
+            <span class="range-labels"><i id="anomaly-range-start">Same week</i><i id="anomaly-range-end">8 weeks prior</i></span>
+          </label>
+        </div>
+        <div class="chart-card">
+          <div class="chart-meta">
+            <div><span class="dot egg"></span><b>Egg anomaly</b><small>eggs / trap above or below monthly expectation</small></div>
+            <div><span class="dot env"></span><b id="anomaly-signal-label">Environmental anomaly</b><small>reference-period departure</small></div>
+            <div class="association-card"><span>PEARSON r</span><strong id="anomaly-r">—</strong><small id="anomaly-n">valid paired weeks</small></div>
+          </div>
+          <div id="anomaly-plot" class="main-plot" aria-label="Seasonal-anomaly comparison"></div>
+          <p class="chart-footnote" id="anomaly-footnote">The zero line marks the expected seasonal value. Weekly lags use the full climate record so all 106 egg observations remain available.</p>
+        </div>
+        <div class="results-grid">
+          <article class="takeaway-card"><span>STRONGEST UNIVARIATE MODEL</span><strong>Niño 3.4 SSTA · lag 7 weeks</strong><p>β = +17.72 eggs/trap per 1 SD · R² = 0.337 · AIC = 985.93</p></article>
+          <article class="model-card light">
+            <div><span>INTERPRETATION</span><strong>Broad</strong><small>between-season signal</small></div>
+            <p id="anomaly-interpretation">SSTA reproduced the transition from negative anomalies in season one to positive anomalies in season two, but not weekly peaks.</p>
+          </article>
+        </div>
+      </section>
 
-    <label>
-      Moisture:
-      <select id="moisture-choice">
-        <option value="vapor_pressure">Vapor pressure</option>
-        <option value="relative_humidity">Relative humidity</option>
-      </select>
-    </label>
+      <section id="panel-short" class="layer-panel" role="tabpanel" aria-labelledby="tab-short" hidden>
+        <div class="layer-intro">
+          <div><span class="layer-label">LAYER 3 · SPLINE-ADJUSTED NB-GLM</span><h3>Which local conditions relate to short-term weekly fluctuations?</h3></div>
+          <p>A natural spline controls the seasonal and between-season background. Estimates below compare the main spline-only model with a sensitivity model that also adjusts for previous-week egg abundance.</p>
+        </div>
+        <div class="short-comparison-control">
+          <fieldset>
+            <legend>Fitted-model comparison</legend>
+            <div class="segmented">
+              <input type="radio" name="short-scenario" id="short-baseline" value="baseline" checked>
+              <label for="short-baseline">Temporal adjustment</label>
+              <input type="radio" name="short-scenario" id="short-temperature" value="temperature">
+              <label for="short-temperature">After adding temperature</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="short-layout">
+          <div class="chart-card short-chart-card">
+            <div class="forest-heading"><div><span>OBSERVED VS. FITTED</span><h4 id="short-chart-title">Spline-only and spline + lag-1 models</h4></div><div class="forest-legend"><span><i class="main"></i>Spline only</span><span><i class="sensitivity"></i>Spline + lag-1</span></div></div>
+            <div id="short-plot" class="short-plot" aria-label="Observed and fitted short-term models"></div>
+            <p class="chart-footnote" id="short-footnote">Both fitted lines control broad seasonality and between-season variation; the lag-1 model additionally uses previous-week egg abundance.</p>
+          </div>
+          <aside class="short-findings">
+            <span class="layer-label">ROBUST RESULT</span>
+            <strong>Current-week temperature</strong>
+            <p>was the only local predictor with a strong, consistent positive association in both model specifications.</p>
+            <div><b>2.27×</b><small>Spline-only RR per +1 SD<br>95% CI 1.49–3.45</small></div>
+            <div><b>2.00×</b><small>Lag-1 sensitivity RR per +1 SD<br>95% CI 1.29–3.10</small></div>
+            <p class="sd-note"><b>1 SD = 4.68°C</b><br>Study-period mean-temperature standard deviation.</p>
+            <p class="caution">Temperature at lags 4 and 5 was inversely associated, but single-lag estimates are not independent distributed-lag effects.</p>
+          </aside>
+        </div>
+      </section>
+    </section>
 
-    <label>
-      LST:
-      <select id="lst-choice">
-        <option value="lst_day">Day</option>
-        <option value="lst_night">Night</option>
-        <option value="lst_diurnal">Diurnal</option>
-      </select>
-    </label>
-  </div>
+    <section class="methods section-shell" id="methods">
+      <div class="section-heading">
+        <div>
+          <span class="section-number">READING GUIDE</span>
+          <h2>How to read this explorer</h2>
+        </div>
+      </div>
+      <div class="method-grid">
+        <article><span>01</span><h3>Overall pattern</h3><p>Spearman screening describes raw seasonal correspondence. The NB-GLM models total eggs with valid traps as an offset.</p></article>
+        <article><span>02</span><h3>Seasonal anomaly</h3><p>Pearson and Gaussian regression examine departures from an expected seasonal baseline, including ENSO-related variability.</p></article>
+        <article><span>03</span><h3>Short-term association</h3><p>Spline-adjusted NB-GLMs isolate faster weekly variation after controlling broad seasonal and between-season structure.</p></article>
+      </div>
+      <div class="data-note">
+        <b>Data sources</b>
+        <p>Weekly ovitrap surveillance; ERA5-Land local climate; remotely sensed NDVI; NOAA Niño 3.4 sea-surface temperature anomaly. Environmental coverage: 1991–2024.</p>
+      </div>
+    </section>
+  </main>
 
-  <p class="note">
-    The six-panel plots use standardized values, so egg counts and environmental variables can be compared on the same scale.
-  </p>
+  <footer>
+    <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Mosquito Explorer</span></div>
+    <p>An exploratory companion to ongoing oviposition–climate research.</p>
+    <a href="#explore">Back to explorer ↑</a>
+  </footer>
 
-  <div class="six-panel-grid">
-    <div id="panel-air-temp" class="mini-plot"></div>
-    <div id="panel-precipitation" class="mini-plot"></div>
-    <div id="panel-moisture" class="mini-plot"></div>
-    <div id="panel-lst" class="mini-plot"></div>
-    <div id="panel-soil-moisture" class="mini-plot"></div>
-    <div id="panel-ndvi" class="mini-plot"></div>
-  </div>
-
+  <div id="error-message" class="error-message" role="alert" hidden></div>
   <script src="js/mosquito-explorer.js"></script>
 </body>
 </html>
