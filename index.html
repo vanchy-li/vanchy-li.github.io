@@ -1,83 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="width=device-width,initial-scale=1" name="viewport">
-  <meta content="Vanchy's personal webpage" name="description">
-  <meta name="google" content="notranslate" />
-  <meta content="Modified Mashup templates have been developped by Orson.io team" name="Vanchy-Li">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vanchy Li is a geospatial researcher using remote sensing, spatial modeling, and environmental data to study cities, climate, and vector-borne disease.">
+  <meta property="og:title" content="Vanchy Li — Geospatial Researcher">
+  <meta property="og:description" content="Research at the intersection of remote sensing, environmental change, and public health.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vanchy-li.github.io/">
+  <meta property="og:image" content="https://vanchy-li.github.io/assets/images/bg.jpg">
+  <link rel="canonical" href="https://vanchy-li.github.io/">
+  <link rel="apple-touch-icon" href="./assets/apple-icon-180x180.png">
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="./assets/images/bg.jpg">
+  <link rel="stylesheet" href="./site.css?v=2">
+  <title>Vanchy Li — Geospatial Researcher</title>
+</head>
+<body class="home-page">
+  <header class="site-header" data-header>
+    <a class="brand" href="./index.html" aria-label="Vanchy Li, home">VL<span>.</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">Open navigation</span><span></span><span></span></button>
+    <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+      <a href="./index.html" aria-current="page">Home</a>
+      <a href="./works.html">Research</a>
+      <a href="./teaching.html">Teaching &amp; Quarto</a>
+      <a href="./weekly-notes.html">Weekly Notes</a>
+      <a href="./about.html">About</a>
+    </nav>
+  </header>
 
-  <!-- Disable tap highlight on IE -->
-  <meta name="msapplication-tap-highlight" content="no">
-  
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
-  <link href="./assets/favicon.ico" rel="icon">
-
-  <title>Vanchy Li's Portfolio</title>  
-
-<link href="./main.3f6952e4.css" rel="stylesheet"></head>
-
-<body class="minimal">
-<div id="site-border-left"></div>
-<div id="site-border-right"></div>
-<div id="site-border-top"></div>
-<div id="site-border-bottom"></div>
-<!-- Add your content of header -->
-<header>
-  <nav class="navbar  navbar-fixed-top navbar-inverse">
-    <div class="container">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-
-      <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="nav navbar-nav ">
-          <li><a href="./index.html" title="">Home</a></li>
-          <li><a href="./works.html" title="">Works</a></li>
-          <li><a href="./about.html" title="">About me</a></li>
-          <li><a href="./contact.html" title="">Life</a></li>
-        </ul>
-
-
-      </div> 
-    </div>
-  </nav>
-</header>
-<!-- Add your site or app content here -->
-  <div class="hero-full-container background-image-container white-text-container" style="background-image: url('./assets/images/bg.jpg')">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="hero-full-wrapper">
-            <div class="text-content">
-              <h1>Hello,<br>
-                <span id="typed-strings">
-                  <span>I'm Vanchy Li</span>
-                  <span>a Ph.D. student in Geography</span>
-                  <span>Specializing in GIS & RS</span>
-                </span>
-                <span id="typed"></span>
-              </h1>
-            </div>
-          </div>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-image" role="img" aria-label="A forest trail, representing field observation and environmental research"></div>
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow light">Geography · Remote sensing · Spatial modeling</p>
+        <h1 id="hero-title">Turning Earth observations into environmental insight.</h1>
+        <p class="hero-intro">I’m Vanchy Li, a geospatial researcher studying cities, climate, ecosystems, and vector-borne disease through maps, satellite data, and reproducible models.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="./works.html">Explore my research <span aria-hidden="true">↗</span></a>
+          <a class="text-link light-link" href="./about.html">About my work <span aria-hidden="true">→</span></a>
         </div>
       </div>
-    </div>
-  </div>
+      <p class="hero-index" aria-hidden="true">42.26° N<br>71.80° W</p>
+    </section>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function (event) {
-     type();
-     movingBackgroundImage();
-  });
-</script>
+    <section class="intro-section section-pad" aria-labelledby="focus-title">
+      <div>
+        <p class="eyebrow">Research focus</p>
+        <h2 id="focus-title">I use spatial evidence to make environmental patterns visible—and useful.</h2>
+      </div>
+      <div class="intro-copy">
+        <p>My work connects remote sensing with environmental and public-health questions: where cities are changing, how landscapes affect mosquito risk, and how satellite observations can support conservation decisions.</p>
+        <ul class="tag-list" aria-label="Research methods">
+          <li>Google Earth Engine</li><li>GIS</li><li>Python &amp; R</li><li>Spatial statistics</li><li>Interactive visualization</li>
+        </ul>
+      </div>
+    </section>
 
+    <section class="featured section-pad" aria-labelledby="featured-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Selected work</p><h2 id="featured-title">Research across scales.</h2></div>
+        <a class="text-link" href="./works.html">View all projects <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card feature-card-large">
+          <a href="./works/mosquito-explorer.html" aria-label="Explore the Mosquito Oviposition Explorer">
+            <img src="./assets/images/mosquito1.jpg" alt="Mosquito oviposition explorer charts showing seasonal patterns" width="1400" height="800">
+            <div class="feature-overlay"><p>Public health · Interactive research</p><h3>Mosquito Oviposition Explorer</h3><span>Explore three temporal layers ↗</span></div>
+          </a>
+        </article>
+        <article class="feature-card">
+          <a href="https://vanchy-li.github.io/works/vbi-explorer.html" aria-label="Explore the Visible Built-up Index dashboard">
+            <img src="./assets/images/Urban.jpg" alt="Satellite view used to evaluate bright urban surfaces" width="1706" height="1280" loading="lazy">
+            <div class="feature-overlay"><p>Remote sensing · Urban systems</p><h3>Visible Built-up Index</h3><span>Explore the dashboard ↗</span></div>
+          </a>
+        </article>
+        <article class="feature-card">
+          <a href="./assets/2023Sum_ID_CapitolReefEco_ImpactPoster_FD-final-NESTVAL.pdf" aria-label="View the Capitol Reef vegetation project poster">
+            <img src="./assets/images/CARE1.jpg" alt="Vegetation map of Capitol Reef National Park" width="1706" height="1278" loading="lazy">
+            <div class="feature-overlay"><p>Conservation · NASA DEVELOP</p><h3>Capitol Reef Vegetation</h3><span>View the project poster ↗</span></div>
+          </a>
+        </article>
+      </div>
+    </section>
+  </main>
 
-<script type="text/javascript" src="./main.70a66962.js"></script></body>
-
+  <footer class="site-footer"><p>Vanchy Li · Geospatial researcher</p><div><a href="./about.html#connect">Contact &amp; links</a><a href="#">Back to top ↑</a></div></footer>
+  <script src="./site.js"></script>
+</body>
 </html>
