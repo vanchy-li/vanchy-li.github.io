@@ -8,7 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles/mosquito-explorer.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
@@ -54,17 +56,47 @@
       <div class="section-heading">
         <div>
           <span class="section-number">STUDY AREA</span>
-          <h2>34 ovitraps across<br>San Pedro de Jujuy</h2>
+          <h2>When mosquito eggs surge across the city</h2>
         </div>
-        <p>The surveillance network spans the urban study area in Jujuy Province, northwestern Argentina. Select a marker to identify an individual ovitrap.</p>
+        <p>Explore 34 ovitraps across San Pedro de Jujuy. Move through the surveillance weeks, play the animation, or select a trap to reveal its temporal pattern.</p>
       </div>
-      <div class="map-card">
-        <div id="trap-map" class="trap-map" aria-label="Interactive map of 34 ovitrap locations"></div>
-        <div class="map-caption">
-          <div><span class="map-symbol trap"></span><b>34 ovitraps</b><small>weekly egg collection</small></div>
-          <div><span class="map-symbol boundary"></span><b>Study boundary</b><small>San Pedro urban area</small></div>
-          <p>Coordinates are shown from the study shapefiles supplied with the project.</p>
+
+      <div class="egg-map-header">
+        <p class="egg-map-subtitle">Weekly observed egg counts from 34 ovitraps</p>
+        <div class="egg-date-readout" aria-live="polite">
+          <strong id="egg-current-date">Loading…</strong>
+          <span id="egg-week-number"></span>
         </div>
+      </div>
+
+      <div class="egg-map-stage">
+        <div class="egg-map-card">
+          <div id="egg-map" aria-label="Interactive map of weekly mosquito egg counts by ovitrap"></div>
+        </div>
+        <aside class="egg-chart-card egg-side-panel">
+          <p class="egg-metric-label">Eggs collected this week</p>
+          <p class="egg-metric-value" id="egg-total">—</p>
+          <p class="egg-metric-unit">across functioning ovitraps</p>
+          <div class="egg-mini-stats">
+            <div><span>Valid ovitraps</span><strong id="egg-valid-traps">—</strong></div>
+            <div><span>Mean per valid trap</span><strong id="egg-mean">—</strong></div>
+          </div>
+          <div class="egg-chart-heading">
+            <h3 id="egg-trend-title">All ovitraps</h3>
+            <span>Click a trap to inspect it</span>
+          </div>
+          <svg id="egg-trend-chart" role="img" aria-label="Time series of weekly mosquito egg counts"></svg>
+          <p class="egg-selection-note" id="egg-selection-note">Showing the citywide weekly total.</p>
+        </aside>
+      </div>
+
+      <div class="egg-controls">
+        <button id="egg-play-button" type="button" aria-label="Play weekly animation">Play</button>
+        <div>
+          <input id="egg-week-slider" type="range" min="0" max="103" step="1" value="5" aria-label="Select surveillance week">
+          <div class="egg-range-labels"><span>Aug 2022</span><span>Jul 2024</span></div>
+        </div>
+        <div class="egg-legend" aria-label="Egg count legend"><span>0</span><span class="egg-legend-gradient"></span><span>high</span></div>
       </div>
     </section>
 
