@@ -1,0 +1,25 @@
+project:
+  type: default
+
+format:
+  revealjs:
+    from: markdown-markdown_in_html_blocks-native_divs+raw_html
+    width: 1920
+    height: 1080
+    margin: 0
+    slide-number: false
+    controls: false
+    progress: false
+    center: false
+    transition: fade
+    background-transition: fade
+    navigation-mode: linear
+    history: true
+    hash: true
+    embed-resources: false
+    css: styles.css
+
+execute:
+  echo: false
+  warning: false
+  message: false
