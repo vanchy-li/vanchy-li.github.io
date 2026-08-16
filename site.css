@@ -41,12 +41,3 @@
 .sharing-grid article>p:not(.eyebrow):not(.status-line){max-width:590px}
 .status-line{margin:auto 0 0;padding-top:2rem;border-top:1px solid var(--line);width:100%;font:500 .68rem var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--moss)}
 @media(max-width:800px){.sharing-grid{grid-template-columns:1fr}.sharing-grid article{min-height:380px}}
-
-.teaching-feature{display:grid;grid-template-columns:70px minmax(0,1fr);gap:clamp(1.5rem,5vw,5rem);border-bottom:1px solid var(--line)}
-.teaching-feature-number{padding-top:.3rem;font:500 .68rem var(--mono);letter-spacing:.12em;color:var(--moss)}
-.teaching-feature-copy{max-width:1050px}
-.teaching-feature h2{max-width:950px;margin:.35rem 0 1.5rem;font-size:clamp(2.6rem,5.5vw,6rem);line-height:1;letter-spacing:-.06em}
-.teaching-feature-copy>p:not(.eyebrow){max-width:760px;font-size:1.1rem}
-.teaching-feature .project-actions{align-items:center}
-.teaching-feature .text-link{margin-left:.5rem}
-@media(max-width:700px){.teaching-feature{grid-template-columns:1fr}.teaching-feature-number{padding-top:0}.teaching-feature .text-link{width:100%;margin:.5rem 0 0}}

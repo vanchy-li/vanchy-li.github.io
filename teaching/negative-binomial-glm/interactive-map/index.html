@@ -272,16 +272,19 @@ main { max-width: none !important; padding: 0 !important; }
   </div>
 </div>
 
+<script src="data-inline.js"></script>
 <script>
 (async function () {
-  const csvUrl = "data/pivot_weekly_eggs.csv";
-  const geoUrl = "data/ovitraps.geojson";
   const parseDate = d3.timeParse("%Y-%m-%d");
   const formatDate = d3.timeFormat("%B %d, %Y");
   const formatNumber = d3.format(",.0f");
   const trapIds = d3.range(1, 35).map(d => `SO-${String(d).padStart(2, "0")}`);
 
-  const [rowsRaw, trapsGeo] = await Promise.all([d3.csv(csvUrl), d3.json(geoUrl)]);
+  const decodeText = value => new TextDecoder().decode(
+    Uint8Array.from(atob(value), character => character.charCodeAt(0))
+  );
+  const rowsRaw = d3.csvParse(decodeText(window.MOSQUITO_MAP_DATA.csvBase64));
+  const trapsGeo = JSON.parse(decodeText(window.MOSQUITO_MAP_DATA.geojsonBase64));
   const rows = rowsRaw.map(row => {
     const values = {};
     trapIds.forEach(id => values[id] = row[id] === "" ? null : +row[id]);
