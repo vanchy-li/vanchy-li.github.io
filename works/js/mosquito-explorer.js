@@ -1,7 +1,5 @@
 const STUDY_PATH = "data/mosquito_weekly.csv";
 const CLIMATE_PATH = "data/raw/df_ERA5_NDVI_SST_SSTA_long_origin_07052026.csv";
-const TRAPS_PATH = "data/geo/ovitraps.geojson";
-const TRAP_WEEKLY_PATH = "data/ovitrap_weekly_eggs.csv";
 const BOUNDARY_PATH = "data/geo/study-area.geojson";
 const LAYER3_PATH = "data/model/layer3_fitted.csv";
 const COLORS = { ink: "#18312d", muted: "#6d7b75", grid: "#dfe3dc", orange: "#ff7043", teal: "#176b63", lime: "#d4f251", white: "#fffdf7" };
@@ -19,19 +17,15 @@ let study = [];
 let climate = [];
 let monthlyEggMeans = new Map();
 let monthlyBaselines = {};
-let traps = null;
 let boundary = null;
 let layer3Fits = [];
-let trapWeekly = [];
 
-Promise.all([d3.csv(STUDY_PATH), d3.csv(CLIMATE_PATH), d3.json(TRAPS_PATH), d3.json(BOUNDARY_PATH), d3.csv(LAYER3_PATH), d3.csv(TRAP_WEEKLY_PATH)])
-  .then(([studyRows, climateRows, trapGeojson, boundaryGeojson, layer3Rows, trapWeeklyRows]) => {
+Promise.all([d3.csv(STUDY_PATH), d3.csv(CLIMATE_PATH), d3.json(BOUNDARY_PATH), d3.csv(LAYER3_PATH)])
+  .then(([studyRows, climateRows, boundaryGeojson, layer3Rows]) => {
     study = studyRows.map(row => parseRow(row, "date")).sort((a, b) => a.date - b.date);
     climate = climateRows.map(row => parseRow(row, "dates")).sort((a, b) => a.dates - b.dates);
-    traps = trapGeojson;
     boundary = boundaryGeojson;
     layer3Fits = layer3Rows.map(row => parseRow(row, "date"));
-    trapWeekly = trapWeeklyRows;
     prepareAnomalies();
     initialise();
   })
@@ -60,7 +54,6 @@ function initialise() {
   renderOverall();
   renderAnomaly();
   renderShortTerm();
-  renderEggMap();
   renderPrediction();
 }
 
@@ -124,128 +117,6 @@ function renderOverall() {
   document.getElementById("overall-rho").textContent = signed(rho);
   document.getElementById("overall-n").textContent = `${pairs.length} paired weeks`;
   renderDualAxis("overall-plot", pairs, meta, false);
-}
-
-function renderEggMap() {
-  const parseDate = d3.timeParse("%Y-%m-%d");
-  const formatDate = d3.timeFormat("%B %d, %Y");
-  const formatNumber = d3.format(",.0f");
-  const trapIds = d3.range(1, 35).map(d => `SO-${String(d).padStart(2, "0")}`);
-  const rows = trapWeekly.map(row => {
-    const values = {};
-    trapIds.forEach(id => values[id] = row[id] === "" ? null : +row[id]);
-    return {
-      date: parseDate(row["Fecha Hasta"]), total: +row["Total Eggs"],
-      sensorCount: +row["Sensor Counts"], mean: +row["Total Mean Eggs"],
-      week: +row["Week_Number"], values
-    };
-  });
-
-  traps.features.forEach(feature => {
-    const raw = feature.properties.Name || "";
-    const match = raw.match(/SO-\d{2}/i);
-    feature.properties.trapId = match ? match[0].toUpperCase() : raw;
-  });
-
-  const allValues = rows.flatMap(row => trapIds.map(id => row.values[id])).filter(value => value !== null && value > 0);
-  const maxValue = d3.max(allValues) || 1;
-  const color = d3.scaleSequentialLog([1, maxValue], d3.interpolateYlOrRd);
-  const radius = d3.scaleSqrt([0, maxValue], [4, 24]);
-  const map = L.map("egg-map", { zoomControl: true, scrollWheelZoom: false });
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19, attribution: "© OpenStreetMap contributors"
-  }).addTo(map);
-  map.fitBounds(L.geoJSON(traps).getBounds().pad(.23));
-
-  const markers = new Map();
-  traps.features.forEach(feature => {
-    const id = feature.properties.trapId;
-    const [lon, lat] = feature.geometry.coordinates;
-    const marker = L.circleMarker([lat, lon], {
-      radius: 4, color: "#fff", weight: 1.4, fillColor: "#d8dedb", fillOpacity: .92
-    }).addTo(map);
-    marker.on("click", () => selectTrap(id));
-    markers.set(id, marker);
-  });
-
-  let currentIndex = Math.min(5, rows.length - 1);
-  let selectedTrap = null;
-  let timer = null;
-  const slider = document.getElementById("egg-week-slider");
-  const playButton = document.getElementById("egg-play-button");
-  slider.max = String(rows.length - 1);
-  document.querySelector(".egg-range-labels span:first-child").textContent = d3.timeFormat("%b %Y")(rows[0].date);
-  document.querySelector(".egg-range-labels span:last-child").textContent = d3.timeFormat("%b %Y")(rows.at(-1).date);
-
-  function markerStyle(value, selected) {
-    const outline = selected ? COLORS.ink : "#fff";
-    const weight = selected ? 3 : 1.3;
-    if (value === null) return { radius: 4, fillColor: "#cdd5d1", fillOpacity: .45, color: outline, weight };
-    if (value === 0) return { radius: 4, fillColor: "#f6e8a7", fillOpacity: .9, color: outline, weight };
-    return { radius: radius(value), fillColor: color(value), fillOpacity: .88, color: outline, weight };
-  }
-
-  function update(index) {
-    currentIndex = index;
-    slider.value = String(index);
-    const row = rows[index];
-    document.getElementById("egg-current-date").textContent = formatDate(row.date);
-    document.getElementById("egg-week-number").textContent = `Surveillance week ${row.week}`;
-    document.getElementById("egg-total").textContent = formatNumber(row.total);
-    document.getElementById("egg-valid-traps").textContent = row.sensorCount;
-    document.getElementById("egg-mean").textContent = d3.format(".1f")(row.mean);
-    markers.forEach((marker, id) => {
-      const value = row.values[id];
-      marker.setStyle(markerStyle(value, id === selectedTrap));
-      const valueText = value === null ? "No valid observation" : `${formatNumber(value)} eggs`;
-      marker.bindTooltip(`<div class="trap-tooltip"><strong>${id}</strong><br><span>${valueText}</span></div>`, { direction: "top", offset: [0, -6] });
-    });
-    drawTrend();
-  }
-
-  function selectTrap(id) {
-    selectedTrap = selectedTrap === id ? null : id;
-    document.getElementById("egg-trend-title").textContent = selectedTrap || "All ovitraps";
-    document.getElementById("egg-selection-note").textContent = selectedTrap
-      ? `Showing weekly observed counts at ${selectedTrap}. Click it again to return to the citywide total.`
-      : "Showing the citywide weekly total.";
-    update(currentIndex);
-  }
-
-  function drawTrend() {
-    const svg = d3.select("#egg-trend-chart");
-    const node = svg.node();
-    const width = Math.max(260, node.clientWidth || 360);
-    const height = Math.max(170, node.clientHeight || 205);
-    const margin = { top: 12, right: 8, bottom: 27, left: 45 };
-    svg.attr("viewBox", `0 0 ${width} ${height}`).selectAll("*").remove();
-    const series = rows.map(row => ({ date: row.date, value: selectedTrap ? row.values[selectedTrap] : row.total }));
-    const maxY = d3.max(series, d => d.value === null ? 0 : d.value) || 1;
-    const x = d3.scaleTime().domain(d3.extent(rows, d => d.date)).range([margin.left, width - margin.right]);
-    const y = d3.scaleLinear().domain([0, maxY * 1.06]).nice().range([height - margin.bottom, margin.top]);
-    svg.append("g").attr("class", "axis").attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).ticks(3).tickFormat(d3.timeFormat("%b %Y"))).call(g => g.select(".domain").remove());
-    svg.append("g").attr("class", "axis").attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).ticks(4).tickFormat(d3.format("~s"))).call(g => g.select(".domain").remove())
-      .call(g => g.selectAll(".tick line").clone().attr("x2", width - margin.left - margin.right).attr("stroke-opacity", .45));
-    const line = d3.line().defined(d => d.value !== null).x(d => x(d.date)).y(d => y(d.value));
-    svg.append("path").datum(series).attr("fill", "none").attr("stroke", selectedTrap ? COLORS.teal : COLORS.orange).attr("stroke-width", 2.25).attr("d", line);
-    const current = series[currentIndex];
-    svg.append("line").attr("x1", x(current.date)).attr("x2", x(current.date)).attr("y1", margin.top).attr("y2", height - margin.bottom)
-      .attr("stroke", COLORS.ink).attr("stroke-width", 1.2).attr("stroke-dasharray", "3,3");
-    if (current.value !== null) svg.append("circle").attr("cx", x(current.date)).attr("cy", y(current.value)).attr("r", 4.5).attr("fill", "#fff").attr("stroke", COLORS.ink).attr("stroke-width", 2);
-  }
-
-  slider.addEventListener("input", event => update(+event.target.value));
-  playButton.addEventListener("click", () => {
-    if (timer) {
-      clearInterval(timer); timer = null; playButton.textContent = "Play"; playButton.setAttribute("aria-label", "Play weekly animation"); return;
-    }
-    playButton.textContent = "Pause"; playButton.setAttribute("aria-label", "Pause weekly animation");
-    timer = setInterval(() => update((currentIndex + 1) % rows.length), 650);
-  });
-  window.addEventListener("resize", drawTrend);
-  update(currentIndex);
 }
 
 function renderPrediction() {

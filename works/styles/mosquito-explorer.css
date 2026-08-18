@@ -74,6 +74,9 @@ h1 em { display: inline-block; margin-top: .24em; color: var(--lime); font-style
 h2 { font-size: clamp(2.3rem, 4vw, 4.6rem); letter-spacing: -.06em; line-height: 1; margin: .7rem 0 0; font-weight: 500; }
 .section-heading > p { color: var(--muted); margin: 0; }
 .study-area { background: #dfe6d8; }
+.study-static-figure { margin: 0; overflow: hidden; background: var(--white); border: 1px solid #b7c2b3; border-radius: 18px; box-shadow: var(--shadow); }
+.study-static-figure img { display: block; width: 100%; height: auto; }
+.study-static-figure figcaption { padding: 1rem 1.4rem; color: var(--muted); font-size: .78rem; border-top: 1px solid var(--line); }
 .egg-map-header { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; margin: -1.8rem 0 1.1rem; }
 .egg-map-subtitle { margin: 0; color: var(--muted); }
 .egg-date-readout { text-align: right; white-space: nowrap; }
