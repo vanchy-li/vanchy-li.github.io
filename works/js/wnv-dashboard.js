@@ -117,7 +117,13 @@ function updateLegend() {
 
 function drawMap() {
   state.map = L.map("wnv-map", {zoomControl:true, scrollWheelZoom:false}).setView([42.25, -71.8], 7);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {maxZoom:18, attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(state.map);
+  // Use the public OpenStreetMap raster tiles. Unlike the former CARTO URL,
+  // this endpoint does not require an API key for this low-traffic research
+  // dashboard. Municipality predictions remain a separate GeoJSON overlay.
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(state.map);
   state.geoLayer = L.geoJSON(state.geojson, {style:styleFeature, onEachFeature}).addTo(state.map);
   state.map.fitBounds(state.geoLayer.getBounds(), {padding:[16,16]});
   updateLegend();
