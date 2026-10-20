@@ -1,0 +1,9 @@
+{
+  "2026": {
+    "municipalities": 351,
+    "observed_positive_towns": 124,
+    "observed_total": 339,
+    "predicted_positive_towns": 197,
+    "predicted_expected_total": 253.232
+  }
+}

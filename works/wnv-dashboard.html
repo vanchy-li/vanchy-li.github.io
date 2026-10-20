@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore reported-positive West Nile virus mosquito detections and modeled municipal suitability across Massachusetts.">
+  <title>Massachusetts WNV Surveillance Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3yn2nMZ4N7SOZ7hCWbFqjT7BfM+Q=" crossorigin="">
+  <link rel="stylesheet" href="styles/wnv-dashboard.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#dashboard">Skip to dashboard</a>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="Vanchy Li home">VL<span>.</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="../works.html">Research</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#evaluation">Evaluation</a>
+      <a href="#methods">Methods</a>
+    </nav>
+    <span class="data-badge"><i></i> 2026 holdout</span>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <p class="eyebrow">MASSACHUSETTS · MUNICIPAL SURVEILLANCE · TEMPORAL HOLDOUT</p>
+      <div class="hero-grid">
+        <div>
+          <h1>Where might reported WNV-positive mosquito detections occur?</h1>
+          <p class="hero-copy">A municipality-level view of observed surveillance reports, modeled detection suitability, and out-of-year prediction performance.</p>
+        </div>
+        <aside>
+          <span>INTERPRETATION</span>
+          <p>Suitability is a modeled probability of reported detection—not human disease risk or mosquito infection prevalence.</p>
+        </aside>
+      </div>
+      <div class="stats" aria-live="polite">
+        <article><span>OBSERVED-POSITIVE TOWNS</span><strong id="stat-observed-towns">—</strong><small>municipalities in 2026</small></article>
+        <article><span>REPORTED-POSITIVE SAMPLES</span><strong id="stat-observed-total">—</strong><small>statewide total</small></article>
+        <article><span>MODEL-POSITIVE TOWNS</span><strong id="stat-predicted-towns">—</strong><small>at the selected threshold</small></article>
+        <article><span>BALANCED ACCURACY</span><strong id="stat-balanced-accuracy">—</strong><small>2026 temporal holdout</small></article>
+      </div>
+    </section>
+
+    <section class="dashboard section-shell" id="dashboard">
+      <div class="section-heading">
+        <div><span>01 · MUNICIPAL PATTERNS</span><h2>Explore the geography.</h2></div>
+        <p>Change the map layer, filter by county, then select a municipality for its observed and modeled values.</p>
+      </div>
+
+      <div class="controls" aria-label="Map controls">
+        <label><span>Map layer</span><select id="layer-select">
+          <option value="suitability">Detection suitability</option>
+          <option value="class">Suitability class</option>
+          <option value="observed">Observed count</option>
+          <option value="expected">Predicted expected count</option>
+          <option value="agreement">Observed–predicted agreement</option>
+          <option value="residual">Prediction error</option>
+        </select></label>
+        <label><span>County</span><select id="county-select"><option value="All">All counties</option></select></label>
+        <button id="reset-map" type="button">Reset map</button>
+      </div>
+
+      <div class="map-layout">
+        <div class="map-card">
+          <div id="wnv-map" role="application" aria-label="Interactive map of Massachusetts municipalities"></div>
+          <div id="map-legend" class="map-legend" aria-live="polite"></div>
+        </div>
+        <aside class="town-panel" id="town-panel" aria-live="polite">
+          <p class="panel-kicker">SELECT A MUNICIPALITY</p>
+          <h3 id="town-name">Massachusetts</h3>
+          <p id="town-county">Click a town on the map to inspect its record.</p>
+          <dl>
+            <div><dt>Observed count</dt><dd id="town-observed">—</dd></div>
+            <div><dt>Observed presence</dt><dd id="town-observed-presence">—</dd></div>
+            <div><dt>Detection suitability</dt><dd id="town-probability">—</dd></div>
+            <div><dt>Suitability class</dt><dd id="town-class">—</dd></div>
+            <div><dt>Predicted expected count</dt><dd id="town-expected">—</dd></div>
+            <div><dt>Conditional count</dt><dd id="town-conditional">—</dd></div>
+            <div><dt>Prediction error</dt><dd id="town-error">—</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <section class="evaluation section-shell" id="evaluation">
+      <div class="section-heading">
+        <div><span>02 · MODEL EVALUATION</span><h2>Performance before interpretation.</h2></div>
+        <p>The model was trained on earlier years and evaluated on the 2026 holdout. Threshold-dependent and ranking metrics answer different questions.</p>
+      </div>
+      <div class="metric-grid" id="metric-grid"></div>
+      <div class="importance-grid">
+        <article class="chart-card"><div><span>PRESENCE MODEL</span><h3>Permutation importance</h3></div><div id="presence-importance" class="importance-chart"></div></article>
+        <article class="chart-card"><div><span>CONDITIONAL COUNT MODEL</span><h3>Permutation importance</h3></div><div id="abundance-importance" class="importance-chart"></div></article>
+      </div>
+    </section>
+
+    <section class="methods section-shell" id="methods">
+      <div class="section-heading">
+        <div><span>03 · READING GUIDE</span><h2>What this dashboard can—and cannot—say.</h2></div>
+      </div>
+      <div class="method-grid">
+        <article><span>OUTCOME</span><h3>Reported-positive detection</h3><p>The outcome is the number of reported WNV-positive mosquito samples in each municipality. A zero is not proof that the municipality was sampled and found negative.</p></article>
+        <article><span>TWO-STAGE MODEL</span><h3>Presence, then count</h3><p>The expected count multiplies the modeled presence probability by the predicted count conditional on reported-positive presence.</p></article>
+        <article><span>PREDICTORS</span><h3>Available before prediction</h3><p>The 2026 model uses February–May environmental conditions and prior-year landscape predictors. June–September variables are excluded.</p></article>
+        <article><span>LIMIT</span><h3>Relative suitability</h3><p>Unknown surveillance effort prevents interpretation as absolute WNV prevalence, mosquito abundance, or human disease risk.</p></article>
+      </div>
+      <div class="source-note">
+        <p><strong>Data version</strong> <span id="data-version">—</span></p>
+        <p><strong>Generated</strong> <span id="generated-at">—</span></p>
+        <a href="../assets/AAG_WestNileVirus-VL.pdf">View the research poster ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer><p>Vanchy Li · Geospatial researcher</p><div><a href="../works.html">Research</a><a href="#top">Back to top ↑</a></div></footer>
+  <div id="loading" class="loading" role="status">Loading validated dashboard data…</div>
+  <script src="js/wnv-dashboard.js"></script>
+</body>
+</html>

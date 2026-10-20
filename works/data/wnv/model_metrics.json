@@ -1,0 +1,34 @@
+{
+  "presence": [
+    {
+      "Test_year": 2026,
+      "Threshold": 0.22,
+      "True_negative": 133,
+      "False_positive": 94,
+      "False_negative": 21,
+      "True_positive": 103,
+      "Observed_positive_towns": 124,
+      "Predicted_positive_towns": 197,
+      "Sensitivity": 0.8306451613,
+      "Specificity": 0.5859030837,
+      "Precision": 0.5228426396,
+      "F1": 0.6417445483,
+      "Balanced_accuracy": 0.7082741225,
+      "ROC_AUC": 0.775010658,
+      "Average_precision": 0.6200513753,
+      "Brier_score": 0.194746585
+    }
+  ],
+  "abundance": [
+    {
+      "Test_year": 2026,
+      "Observed_total": 339,
+      "Predicted_total": 253.2318449216,
+      "MAE": 0.936239517,
+      "RMSE": 2.2325928149,
+      "R_squared": 0.3696657758,
+      "Spearman_rho": 0.4787951465,
+      "Spearman_p": 1.632768974e-21
+    }
+  ]
+}

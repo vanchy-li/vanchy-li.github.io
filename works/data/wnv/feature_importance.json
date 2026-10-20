@@ -1,0 +1,762 @@
+{
+  "presence": [
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_emergent_wetland",
+      "Importance_mean": 0.008957276,
+      "Importance_sd": 0.0026146966,
+      "Label": "NLCD prop emergent wetland"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_developed_high",
+      "Importance_mean": 0.0087540565,
+      "Importance_sd": 0.0082928776,
+      "Label": "NLCD prop developed high"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_developed_low",
+      "Importance_mean": 0.0077460523,
+      "Importance_sd": 0.0062938413,
+      "Label": "NLCD prop developed low"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_cultivated_crops",
+      "Importance_mean": 0.0075673398,
+      "Importance_sd": 0.0050658038,
+      "Label": "NLCD prop cultivated crops"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_developed_medium",
+      "Importance_mean": 0.0068474856,
+      "Importance_sd": 0.0076464839,
+      "Label": "NLCD prop developed medium"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_forest_total",
+      "Importance_mean": 0.0068047274,
+      "Importance_sd": 0.0039956227,
+      "Label": "NLCD prop forest total"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_bsi_stdDev",
+      "Importance_mean": 0.0062798832,
+      "Importance_sd": 0.0016785529,
+      "Label": "Feb–May bsi SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_lst_night_c_stdDev",
+      "Importance_mean": 0.0062410975,
+      "Importance_sd": 0.0020805875,
+      "Label": "Feb–May lst night °C stdDev"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_mean_impervious_pct",
+      "Importance_mean": 0.0061939819,
+      "Importance_sd": 0.0069559789,
+      "Label": "NLCD mean impervious (%)"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_grassland",
+      "Importance_mean": 0.0057328413,
+      "Importance_sd": 0.0037348422,
+      "Label": "NLCD prop grassland"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_developed_open",
+      "Importance_mean": 0.0056916248,
+      "Importance_sd": 0.0025529209,
+      "Label": "NLCD prop developed open"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_woody_wetland",
+      "Importance_mean": 0.005629865,
+      "Importance_sd": 0.005261704,
+      "Label": "NLCD prop woody wetland"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_evergreen_forest",
+      "Importance_mean": 0.0053195922,
+      "Importance_sd": 0.0024998658,
+      "Label": "NLCD prop evergreen forest"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_deciduous_forest",
+      "Importance_mean": 0.0052645745,
+      "Importance_sd": 0.004183851,
+      "Label": "NLCD prop deciduous forest"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_mixed_forest",
+      "Importance_mean": 0.0048553369,
+      "Importance_sd": 0.0037064393,
+      "Label": "NLCD prop mixed forest"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_open_water",
+      "Importance_mean": 0.0047412472,
+      "Importance_sd": 0.0014454217,
+      "Label": "NLCD prop open water"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_pasture_hay",
+      "Importance_mean": 0.0045983081,
+      "Importance_sd": 0.0027137904,
+      "Label": "NLCD prop pasture hay"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_ndvi_stdDev",
+      "Importance_mean": 0.0045468463,
+      "Importance_sd": 0.0039078265,
+      "Label": "Feb–May ndvi SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_medium_developed_edge_density_m_per_km2",
+      "Importance_mean": 0.0044059799,
+      "Importance_sd": 0.0057151363,
+      "Label": "NLCD medium developed edge density m per km²"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_wetland_total",
+      "Importance_mean": 0.0037843522,
+      "Importance_sd": 0.0037600522,
+      "Label": "NLCD prop wetland total"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_vbi_stdDev",
+      "Importance_mean": 0.003482253,
+      "Importance_sd": 0.0021319272,
+      "Label": "Feb–May vbi SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_vapor_pressure_kpa_daily_median",
+      "Importance_mean": 0.0033940451,
+      "Importance_sd": 0.005412294,
+      "Label": "Feb–May vapor pressure (kPa) daily median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_grassland_patch_density_per_km2",
+      "Importance_mean": 0.0032438712,
+      "Importance_sd": 0.0051726906,
+      "Label": "NLCD grassland patch density per km²"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_air_temperature_c_daily_sd",
+      "Importance_mean": 0.0028381314,
+      "Importance_sd": 0.0027275377,
+      "Label": "Feb–May air temperature °C daily SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_vapor_pressure_kpa_daily_sd",
+      "Importance_mean": 0.0026970788,
+      "Importance_sd": 0.0036135793,
+      "Label": "Feb–May vapor pressure (kPa) daily SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_ndvi_median",
+      "Importance_mean": 0.0026340156,
+      "Importance_sd": 0.0021843313,
+      "Label": "Feb–May ndvi median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_precipitation_total_mm",
+      "Importance_mean": 0.0026044097,
+      "Importance_sd": 0.0017429463,
+      "Label": "Feb–May precipitation total mm"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_shannon_diversity",
+      "Importance_mean": 0.0025790421,
+      "Importance_sd": 0.0045091397,
+      "Label": "NLCD shannon diversity"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_bsi_median",
+      "Importance_mean": 0.002484437,
+      "Importance_sd": 0.0016697961,
+      "Label": "Feb–May bsi median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_precipitation_mm_daily_median",
+      "Importance_mean": 0.0015799076,
+      "Importance_sd": 0.0022734822,
+      "Label": "Feb–May precipitation mm daily median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_mndwi_stdDev",
+      "Importance_mean": 0.0013395159,
+      "Importance_sd": 0.0029456221,
+      "Label": "Feb–May mndwi SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_medium_developed_patch_density_per_km2",
+      "Importance_mean": 0.001095298,
+      "Importance_sd": 0.0068002704,
+      "Label": "NLCD medium developed patch density per km²"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_lst_day_c_stdDev",
+      "Importance_mean": 0.0007873194,
+      "Importance_sd": 0.0018720413,
+      "Label": "Feb–May lst day °C stdDev"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_lst_day_c_median",
+      "Importance_mean": 0.0007838257,
+      "Importance_sd": 0.0055358132,
+      "Label": "Feb–May lst day °C median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_bsi_mean",
+      "Importance_mean": 0.0006841393,
+      "Importance_sd": 0.0020792876,
+      "Label": "Feb–May bsi mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_precipitation_mm_daily_mean",
+      "Importance_mean": 0.0005877128,
+      "Importance_sd": 0.0018084484,
+      "Label": "Feb–May precipitation mm daily mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_vapor_pressure_kpa_daily_mean",
+      "Importance_mean": 0.0001484399,
+      "Importance_sd": 0.0072917151,
+      "Label": "Feb–May vapor pressure (kPa) daily mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_reference_year",
+      "Importance_mean": 0.0,
+      "Importance_sd": 0.0,
+      "Label": "NLCD reference year"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "town_area_km2",
+      "Importance_mean": 0.0,
+      "Importance_sd": 0.0,
+      "Label": "town area km2"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_lst_day_c_mean",
+      "Importance_mean": -0.0001602616,
+      "Importance_sd": 0.0063888995,
+      "Label": "Feb–May lst day °C mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_vbi_mean",
+      "Importance_mean": -0.0003693765,
+      "Importance_sd": 0.005459782,
+      "Label": "Feb–May vbi mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_relative_humidity_pct_daily_sd",
+      "Importance_mean": -0.0004541462,
+      "Importance_sd": 0.0051697365,
+      "Label": "Feb–May relative humidity (%) daily SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "nlcd_prop_developed_total",
+      "Importance_mean": -0.000610083,
+      "Importance_sd": 0.0055870017,
+      "Label": "NLCD prop developed total"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_precipitation_mm_daily_sd",
+      "Importance_mean": -0.0009609599,
+      "Importance_sd": 0.0019856426,
+      "Label": "Feb–May precipitation mm daily SD"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_ndvi_mean",
+      "Importance_mean": -0.0009883411,
+      "Importance_sd": 0.0022470211,
+      "Label": "Feb–May ndvi mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_lst_night_c_median",
+      "Importance_mean": -0.0013685542,
+      "Importance_sd": 0.0041863376,
+      "Label": "Feb–May lst night °C median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_lst_night_c_mean",
+      "Importance_mean": -0.001581216,
+      "Importance_sd": 0.0038644311,
+      "Label": "Feb–May lst night °C mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_air_temperature_c_daily_median",
+      "Importance_mean": -0.0023663509,
+      "Importance_sd": 0.0062631073,
+      "Label": "Feb–May air temperature °C daily median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_vbi_median",
+      "Importance_mean": -0.0024560027,
+      "Importance_sd": 0.0051544574,
+      "Label": "Feb–May vbi median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_relative_humidity_pct_daily_mean",
+      "Importance_mean": -0.003514704,
+      "Importance_sd": 0.0041683849,
+      "Label": "Feb–May relative humidity (%) daily mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_relative_humidity_pct_daily_median",
+      "Importance_mean": -0.0049207062,
+      "Importance_sd": 0.0049115996,
+      "Label": "Feb–May relative humidity (%) daily median"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "era5_feb_may_air_temperature_c_daily_mean",
+      "Importance_mean": -0.0054847446,
+      "Importance_sd": 0.0066487114,
+      "Label": "Feb–May air temperature °C daily mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_mndwi_mean",
+      "Importance_mean": -0.0059638956,
+      "Importance_sd": 0.0120988123,
+      "Label": "Feb–May mndwi mean"
+    },
+    {
+      "Model": "Presence",
+      "Predictor": "rs_feb_may_mndwi_median",
+      "Importance_mean": -0.0114265003,
+      "Importance_sd": 0.0100898252,
+      "Label": "Feb–May mndwi median"
+    }
+  ],
+  "conditional_abundance": [
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_grassland_patch_density_per_km2",
+      "Importance_mean": 0.0807405024,
+      "Importance_sd": 0.0197048265,
+      "Label": "NLCD grassland patch density per km²"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_grassland",
+      "Importance_mean": 0.0712292407,
+      "Importance_sd": 0.0178078089,
+      "Label": "NLCD prop grassland"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_developed_high",
+      "Importance_mean": 0.0463931807,
+      "Importance_sd": 0.0157908856,
+      "Label": "NLCD prop developed high"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_pasture_hay",
+      "Importance_mean": 0.0353042942,
+      "Importance_sd": 0.0039234355,
+      "Label": "NLCD prop pasture hay"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_lst_day_c_stdDev",
+      "Importance_mean": 0.0242701337,
+      "Importance_sd": 0.0278047113,
+      "Label": "Feb–May lst day °C stdDev"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_wetland_total",
+      "Importance_mean": 0.0228894119,
+      "Importance_sd": 0.007053706,
+      "Label": "NLCD prop wetland total"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_mean_impervious_pct",
+      "Importance_mean": 0.0213405456,
+      "Importance_sd": 0.0079618049,
+      "Label": "NLCD mean impervious (%)"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_developed_total",
+      "Importance_mean": 0.0181339925,
+      "Importance_sd": 0.0108516894,
+      "Label": "NLCD prop developed total"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_ndvi_stdDev",
+      "Importance_mean": 0.0169523185,
+      "Importance_sd": 0.007225917,
+      "Label": "Feb–May ndvi SD"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_cultivated_crops",
+      "Importance_mean": 0.0165390254,
+      "Importance_sd": 0.0100377354,
+      "Label": "NLCD prop cultivated crops"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_mixed_forest",
+      "Importance_mean": 0.0161121714,
+      "Importance_sd": 0.0027389416,
+      "Label": "NLCD prop mixed forest"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_evergreen_forest",
+      "Importance_mean": 0.0148708004,
+      "Importance_sd": 0.0041200578,
+      "Label": "NLCD prop evergreen forest"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_developed_open",
+      "Importance_mean": 0.0142229193,
+      "Importance_sd": 0.003433084,
+      "Label": "NLCD prop developed open"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_shannon_diversity",
+      "Importance_mean": 0.0139994782,
+      "Importance_sd": 0.0016638154,
+      "Label": "NLCD shannon diversity"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_open_water",
+      "Importance_mean": 0.0136935117,
+      "Importance_sd": 0.0052793334,
+      "Label": "NLCD prop open water"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_bsi_stdDev",
+      "Importance_mean": 0.0130335476,
+      "Importance_sd": 0.007685439,
+      "Label": "Feb–May bsi SD"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_vbi_median",
+      "Importance_mean": 0.0124704374,
+      "Importance_sd": 0.0093628514,
+      "Label": "Feb–May vbi median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_emergent_wetland",
+      "Importance_mean": 0.0116725483,
+      "Importance_sd": 0.0051065926,
+      "Label": "NLCD prop emergent wetland"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_medium_developed_edge_density_m_per_km2",
+      "Importance_mean": 0.0110701164,
+      "Importance_sd": 0.0098883035,
+      "Label": "NLCD medium developed edge density m per km²"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_vbi_mean",
+      "Importance_mean": 0.0110397434,
+      "Importance_sd": 0.0104781542,
+      "Label": "Feb–May vbi mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_lst_day_c_mean",
+      "Importance_mean": 0.0107619326,
+      "Importance_sd": 0.0074815067,
+      "Label": "Feb–May lst day °C mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_ndvi_median",
+      "Importance_mean": 0.0106791794,
+      "Importance_sd": 0.0030291175,
+      "Label": "Feb–May ndvi median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_deciduous_forest",
+      "Importance_mean": 0.0093462287,
+      "Importance_sd": 0.0019940097,
+      "Label": "NLCD prop deciduous forest"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_mndwi_mean",
+      "Importance_mean": 0.0092548631,
+      "Importance_sd": 0.0082442506,
+      "Label": "Feb–May mndwi mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_developed_medium",
+      "Importance_mean": 0.0089809517,
+      "Importance_sd": 0.004054495,
+      "Label": "NLCD prop developed medium"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_mndwi_stdDev",
+      "Importance_mean": 0.0084024664,
+      "Importance_sd": 0.0046513348,
+      "Label": "Feb–May mndwi SD"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_mndwi_median",
+      "Importance_mean": 0.0075154104,
+      "Importance_sd": 0.0051726525,
+      "Label": "Feb–May mndwi median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_lst_night_c_mean",
+      "Importance_mean": 0.0066253924,
+      "Importance_sd": 0.0031651846,
+      "Label": "Feb–May lst night °C mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_forest_total",
+      "Importance_mean": 0.0064628895,
+      "Importance_sd": 0.0015900864,
+      "Label": "NLCD prop forest total"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_ndvi_mean",
+      "Importance_mean": 0.0064493727,
+      "Importance_sd": 0.0020426168,
+      "Label": "Feb–May ndvi mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_air_temperature_c_daily_sd",
+      "Importance_mean": 0.0062016359,
+      "Importance_sd": 0.0038349515,
+      "Label": "Feb–May air temperature °C daily SD"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_bsi_mean",
+      "Importance_mean": 0.0061116412,
+      "Importance_sd": 0.002158404,
+      "Label": "Feb–May bsi mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_lst_night_c_stdDev",
+      "Importance_mean": 0.0052430461,
+      "Importance_sd": 0.0037214593,
+      "Label": "Feb–May lst night °C stdDev"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_medium_developed_patch_density_per_km2",
+      "Importance_mean": 0.0046990562,
+      "Importance_sd": 0.0013182561,
+      "Label": "NLCD medium developed patch density per km²"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_developed_low",
+      "Importance_mean": 0.0042512272,
+      "Importance_sd": 0.0018541811,
+      "Label": "NLCD prop developed low"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_lst_night_c_median",
+      "Importance_mean": 0.0039699127,
+      "Importance_sd": 0.0023556948,
+      "Label": "Feb–May lst night °C median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_relative_humidity_pct_daily_median",
+      "Importance_mean": 0.0038509169,
+      "Importance_sd": 0.0062409871,
+      "Label": "Feb–May relative humidity (%) daily median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_relative_humidity_pct_daily_mean",
+      "Importance_mean": 0.0034646833,
+      "Importance_sd": 0.0039635618,
+      "Label": "Feb–May relative humidity (%) daily mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_air_temperature_c_daily_median",
+      "Importance_mean": 0.0031805401,
+      "Importance_sd": 0.0012508676,
+      "Label": "Feb–May air temperature °C daily median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_prop_woody_wetland",
+      "Importance_mean": 0.0031448185,
+      "Importance_sd": 0.0010140374,
+      "Label": "NLCD prop woody wetland"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_bsi_median",
+      "Importance_mean": 0.0027243522,
+      "Importance_sd": 0.0010619166,
+      "Label": "Feb–May bsi median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_vapor_pressure_kpa_daily_median",
+      "Importance_mean": 0.0016954278,
+      "Importance_sd": 0.0015839963,
+      "Label": "Feb–May vapor pressure (kPa) daily median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_air_temperature_c_daily_mean",
+      "Importance_mean": 0.0013504601,
+      "Importance_sd": 0.0010651224,
+      "Label": "Feb–May air temperature °C daily mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_vapor_pressure_kpa_daily_mean",
+      "Importance_mean": 0.0006320668,
+      "Importance_sd": 0.0021881185,
+      "Label": "Feb–May vapor pressure (kPa) daily mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_precipitation_total_mm",
+      "Importance_mean": 0.0003748192,
+      "Importance_sd": 0.0004630263,
+      "Label": "Feb–May precipitation total mm"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_precipitation_mm_daily_median",
+      "Importance_mean": 8.71061e-05,
+      "Importance_sd": 0.001856149,
+      "Label": "Feb–May precipitation mm daily median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_precipitation_mm_daily_mean",
+      "Importance_mean": 7.60983e-05,
+      "Importance_sd": 0.0005672455,
+      "Label": "Feb–May precipitation mm daily mean"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "town_area_km2",
+      "Importance_mean": 0.0,
+      "Importance_sd": 0.0,
+      "Label": "town area km2"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "nlcd_reference_year",
+      "Importance_mean": 0.0,
+      "Importance_sd": 0.0,
+      "Label": "NLCD reference year"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_precipitation_mm_daily_sd",
+      "Importance_mean": -0.0005367906,
+      "Importance_sd": 0.000665641,
+      "Label": "Feb–May precipitation mm daily SD"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_vapor_pressure_kpa_daily_sd",
+      "Importance_mean": -0.0006090618,
+      "Importance_sd": 0.000698027,
+      "Label": "Feb–May vapor pressure (kPa) daily SD"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_lst_day_c_median",
+      "Importance_mean": -0.0014671541,
+      "Importance_sd": 0.0040623971,
+      "Label": "Feb–May lst day °C median"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "era5_feb_may_relative_humidity_pct_daily_sd",
+      "Importance_mean": -0.0043838991,
+      "Importance_sd": 0.0065531521,
+      "Label": "Feb–May relative humidity (%) daily SD"
+    },
+    {
+      "Model": "Conditional abundance",
+      "Predictor": "rs_feb_may_vbi_stdDev",
+      "Importance_mean": -0.0062323863,
+      "Importance_sd": 0.0230490354,
+      "Label": "Feb–May vbi SD"
+    }
+  ]
+}

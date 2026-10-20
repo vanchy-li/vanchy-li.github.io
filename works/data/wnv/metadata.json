@@ -1,0 +1,30 @@
+{
+  "title": "Massachusetts WNV Municipal Surveillance Dashboard",
+  "data_version": "2026.1-leakage-corrected",
+  "generated_at_utc": "2026-10-20T20:24:43.300977+00:00",
+  "available_years": [
+    2026
+  ],
+  "geographic_unit": "Massachusetts municipality",
+  "observation_unit": "municipality-year",
+  "model_threshold": 0.22,
+  "landscape_source_year": 2025,
+  "definitions": {
+    "Predicted_probability": "Modeled probability of at least one reported-positive mosquito sample.",
+    "Predicted_expected_count": "Presence probability multiplied by the predicted conditional positive count.",
+    "Predicted_conditional_count": "Predicted reported-positive count assuming reported-positive presence occurs."
+  },
+  "limitations": [
+    "No reported-positive detection is not a confirmed negative.",
+    "Unknown surveillance effort prevents interpretation as absolute WNV risk.",
+    "Suitability does not represent human disease risk or mosquito infection prevalence."
+  ],
+  "source_files": [
+    "WNV_2026_corrected_town_predictions.csv",
+    "Massachusetts_MassGIS_municipalities.geojson",
+    "WNV_2026_presence_metrics_leakage_corrected.csv",
+    "WNV_2026_abundance_metrics_leakage_corrected.csv",
+    "WNV_2026_presence_permutation_importance_corrected.csv",
+    "WNV_2026_abundance_permutation_importance_corrected.csv"
+  ]
+}
