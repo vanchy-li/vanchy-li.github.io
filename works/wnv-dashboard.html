@@ -24,7 +24,7 @@
       <a href="#evaluation">Evaluation</a>
       <a href="#methods">Methods</a>
     </nav>
-    <span class="data-badge"><i></i> 2026 holdout</span>
+    <span class="data-badge"><i></i> <span id="header-year">2026</span> view</span>
   </header>
 
   <main>
@@ -41,10 +41,10 @@
         </aside>
       </div>
       <div class="stats" aria-live="polite">
-        <article><span>OBSERVED-POSITIVE TOWNS</span><strong id="stat-observed-towns">—</strong><small>municipalities in 2026</small></article>
+        <article><span>OBSERVED-POSITIVE TOWNS</span><strong id="stat-observed-towns">—</strong><small>municipalities in selected year</small></article>
         <article><span>REPORTED-POSITIVE SAMPLES</span><strong id="stat-observed-total">—</strong><small>statewide total</small></article>
         <article><span>MODEL-POSITIVE TOWNS</span><strong id="stat-predicted-towns">—</strong><small>at the selected threshold</small></article>
-        <article><span>BALANCED ACCURACY</span><strong id="stat-balanced-accuracy">—</strong><small>2026 temporal holdout</small></article>
+        <article><span>BALANCED ACCURACY</span><strong id="stat-balanced-accuracy">—</strong><small>selected temporal holdout</small></article>
       </div>
     </section>
 
@@ -55,6 +55,7 @@
       </div>
 
       <div class="controls" aria-label="Map controls">
+        <label><span>Year</span><select id="year-select" aria-label="Select year"></select></label>
         <label><span>Map layer</span><select id="layer-select">
           <option value="suitability">Detection suitability</option>
           <option value="class">Suitability class</option>
@@ -85,6 +86,7 @@
             <div><dt>Conditional count</dt><dd id="town-conditional">—</dd></div>
             <div><dt>Prediction error</dt><dd id="town-error">—</dd></div>
           </dl>
+          <div id="town-history" class="town-history" aria-label="Selected municipality annual history"></div>
         </aside>
       </div>
     </section>
@@ -92,10 +94,11 @@
     <section class="evaluation section-shell" id="evaluation">
       <div class="section-heading">
         <div><span>02 · MODEL EVALUATION</span><h2>Performance before interpretation.</h2></div>
-        <p>The model was trained on earlier years and evaluated on the 2026 holdout. Threshold-dependent and ranking metrics answer different questions.</p>
+        <p id="evaluation-copy">The model was trained on earlier years and evaluated on a temporal holdout. Threshold-dependent and ranking metrics answer different questions.</p>
       </div>
       <div class="metric-grid" id="metric-grid"></div>
-      <div class="importance-grid">
+      <p id="importance-note" class="importance-note">Permutation importance currently reflects the 2026 holdout model.</p>
+      <div class="importance-grid" id="importance-grid">
         <article class="chart-card"><div><span>PRESENCE MODEL</span><h3>Permutation importance</h3></div><div id="presence-importance" class="importance-chart"></div></article>
         <article class="chart-card"><div><span>CONDITIONAL COUNT MODEL</span><h3>Permutation importance</h3></div><div id="abundance-importance" class="importance-chart"></div></article>
       </div>
@@ -108,7 +111,7 @@
       <div class="method-grid">
         <article><span>OUTCOME</span><h3>Reported-positive detection</h3><p>The outcome is the number of reported WNV-positive mosquito samples in each municipality. A zero is not proof that the municipality was sampled and found negative.</p></article>
         <article><span>TWO-STAGE MODEL</span><h3>Presence, then count</h3><p>The expected count multiplies the modeled presence probability by the predicted count conditional on reported-positive presence.</p></article>
-        <article><span>PREDICTORS</span><h3>Available before prediction</h3><p>The 2026 model uses February–May environmental conditions and prior-year landscape predictors. June–September variables are excluded.</p></article>
+        <article><span>PREDICTORS</span><h3>Available before prediction</h3><p>Holdout models use February–May environmental conditions and prior-year landscape predictors. June–September variables are excluded.</p></article>
         <article><span>LIMIT</span><h3>Relative suitability</h3><p>Unknown surveillance effort prevents interpretation as absolute WNV prevalence, mosquito abundance, or human disease risk.</p></article>
       </div>
       <div class="source-note">
@@ -121,6 +124,6 @@
 
   <footer><p>Vanchy Li · Geospatial researcher</p><div><a href="../works.html">Research</a><a href="#top">Back to top ↑</a></div></footer>
   <div id="loading" class="loading" role="status">Loading validated dashboard data…</div>
-  <script src="js/wnv-dashboard.js?v=20261020"></script>
+  <script src="js/wnv-dashboard-v2.js?v=20261020"></script>
 </body>
 </html>
