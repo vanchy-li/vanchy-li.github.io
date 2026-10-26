@@ -3,6 +3,9 @@
 @media(max-width:1000px){.stats,.metric-grid,.method-grid{grid-template-columns:repeat(2,1fr)}.map-layout{grid-template-columns:1fr}.town-panel{min-height:auto}.importance-grid{grid-template-columns:1fr}.hero-grid,.section-heading{grid-template-columns:1fr}.source-note{align-items:flex-start;flex-direction:column}.source-note a{margin-left:0}}
 @media(max-width:700px){.site-header{height:70px}.site-header nav{display:none}.data-badge{font-size:.55rem}.hero{padding-top:3rem}.hero h1{font-size:2.8rem}.stats,.metric-grid,.method-grid{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.controls button{width:100%}.map-card #wnv-map{height:520px}.importance-chart{height:470px}.section-shell{padding:4rem 1rem}.source-note{font-size:.58rem}footer{flex-direction:column}.map-legend{max-width:calc(100% - 2rem)}}
 
+/* Improve contrast for small labels shown on light backgrounds. */
+.section-heading span,.chart-card span,.method-grid article>span{color:#176454}
+
 /* Multi-year dashboard controls and municipality history. */
 .controls{grid-template-columns:minmax(130px,.55fr) 1fr 1fr auto}
 .town-history{height:260px;margin-top:1.5rem;border-top:1px solid rgba(255,255,255,.18);padding-top:1rem}
