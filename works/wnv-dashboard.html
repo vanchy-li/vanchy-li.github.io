@@ -10,19 +10,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css?v=20261020" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles/wnv-dashboard.css?v=contrast-1">
+  <link rel="stylesheet" href="styles/wnv-dashboard.css?v=rf-importance-years-1">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#dashboard">Skip to dashboard</a>
+  <a class="skip-link" href="#observations">Skip to observations</a>
 
   <header class="site-header">
     <a class="brand" href="../index.html" aria-label="Vanchy Li home">VL<span>.</span></a>
     <nav aria-label="Primary navigation">
       <a href="../works.html">Research</a>
-      <a href="#dashboard">Dashboard</a>
-      <a href="#evaluation">Evaluation</a>
+      <a href="#observations">Observations</a>
+      <a href="#correlations">Correlations</a>
+        <a href="#evaluation">Predictions</a>
       <a href="#methods">Methods</a>
     </nav>
     <span class="data-badge"><i></i> <span id="header-year">2026</span> view</span>
@@ -33,86 +34,163 @@
       <p class="eyebrow">MASSACHUSETTS · MUNICIPAL SURVEILLANCE · TEMPORAL HOLDOUT</p>
       <div class="hero-grid">
         <div>
-          <h1>Where might reported WNV-positive mosquito detections occur?</h1>
-          <p class="hero-copy">A municipality-level view of observed surveillance reports, modeled detection suitability, and out-of-year prediction performance.</p>
+          <h1>Where and when is WNV being detected in Massachusetts?</h1>
+          <p class="hero-copy">A unified view of reported-positive mosquito surveillance, environmental conditions, and model-based predictions across Massachusetts municipalities.</p>
         </div>
         <aside>
           <span>INTERPRETATION</span>
-          <p>Suitability is a modeled probability of reported detection—not human disease risk or mosquito infection prevalence.</p>
+          <p>Reported detections are surveillance observations—not human disease risk, mosquito prevalence, or proof that places with zero reports were sampled.</p>
         </aside>
       </div>
       <div class="stats" aria-live="polite">
-        <article><span>OBSERVED-POSITIVE TOWNS</span><strong id="stat-observed-towns">—</strong><small>municipalities in selected year</small></article>
-        <article><span>REPORTED-POSITIVE SAMPLES</span><strong id="stat-observed-total">—</strong><small>statewide total</small></article>
-        <article><span>MODEL-POSITIVE TOWNS</span><strong id="stat-predicted-towns">—</strong><small>at the selected threshold</small></article>
-        <article><span>BALANCED ACCURACY</span><strong id="stat-balanced-accuracy">—</strong><small>selected temporal holdout</small></article>
+        <article><span>REPORTED-POSITIVE SAMPLES</span><strong id="stat-observed-total">—</strong><small id="stat-period-label">selected month</small></article>
+        <article><span>MUNICIPALITIES WITH DETECTIONS</span><strong id="stat-observed-towns">—</strong><small>in the selected year/month range</small></article>
+        <article><span>FIRST DETECTION</span><strong id="stat-first-detection">—</strong><small id="stat-first-place">selected year</small></article>
+        <article><span>MOST RECENT DETECTION</span><strong id="stat-recent-detection">—</strong><small id="stat-recent-place">selected year</small></article>
       </div>
     </section>
 
-    <section class="dashboard section-shell" id="dashboard">
+    <section class="dashboard section-shell" id="observations">
       <div class="section-heading">
-        <div><span>01 · MUNICIPAL PATTERNS</span><h2>Explore the geography.</h2></div>
-        <p>Change the map layer, filter by county, then select a municipality for its observed and modeled values.</p>
+        <div><span>01 · OBSERVED DETECTIONS</span><h2>Follow detections through the season.</h2></div>
+        <p>Play the monthly sequence, select any June–September range, filter a county, or click multiple municipalities to compare their combined reports with their counties.</p>
       </div>
 
-      <div class="controls" aria-label="Map controls">
-        <label><span>Year</span><select id="year-select" aria-label="Select year"></select></label>
-        <label><span>Map layer</span><select id="layer-select">
-          <option value="suitability">Detection suitability</option>
-          <option value="class">Suitability class</option>
-          <option value="observed">Observed count</option>
-          <option value="expected">Predicted expected count</option>
-          <option value="agreement">Observed–predicted agreement</option>
-          <option value="residual">Prediction error</option>
-        </select></label>
+      <div class="controls observation-controls" aria-label="Observation controls">
+        <div class="year-range-control"><span>Year range</span><div><select id="year-start-select" aria-label="Select start year"></select><i>to</i><select id="year-end-select" aria-label="Select end year"></select></div></div>
         <label><span>County</span><select id="county-select"><option value="All">All counties</option></select></label>
-        <button id="reset-map" type="button">Reset map</button>
+        <label><span>Add or remove municipality</span><select id="town-select"><option value="All">Choose a municipality…</option></select></label>
+        <button id="play-timeline" class="play-button" type="button" aria-pressed="false"><span aria-hidden="true">▶</span> Play</button>
       </div>
 
-      <div class="map-layout">
+      <div class="timeline" aria-label="Monthly observation timeline">
+        <div class="timeline-current"><span id="timeline-year">2026</span><strong id="timeline-month">September</strong></div>
+        <div class="timeline-range-controls">
+          <label><span>Range start · <strong id="month-start-label">September</strong></span><div class="timeline-slider-stack"><input id="month-start-slider" type="range" min="0" max="3" step="1" value="3" aria-label="Select range start month"><div class="timeline-slider-labels" aria-hidden="true"><i>Jun</i><i>Jul</i><i>Aug</i><i>Sep</i></div></div></label>
+          <label><span>Range end · <strong id="month-end-label">September</strong></span><div class="timeline-slider-stack"><input id="month-end-slider" type="range" min="0" max="3" step="1" value="3" aria-label="Select range end month"><div class="timeline-slider-labels" aria-hidden="true"><i>Jun</i><i>Jul</i><i>Aug</i><i>Sep</i></div></div></label>
+        </div>
+        <p id="timeline-note" class="timeline-note">Select a start and end month; the map sums reported-positive samples across the range.</p>
+      </div>
+
+      <div class="observation-insight">
+        <div><span>KEY TAKEAWAY</span><p id="observation-takeaway">Loading the selected observation period…</p></div>
+        <button id="download-view" type="button">Download displayed data ↓</button>
+      </div>
+      <p class="surveillance-caveat"><strong>Interpret with care:</strong> Counts reflect reported-positive mosquito samples and are influenced by where and when surveillance occurred. “0 reported” does not confirm that sampling occurred.</p>
+
+      <div class="map-layout observed-layout">
         <div class="map-card">
           <div id="wnv-map" role="application" aria-label="Interactive map of Massachusetts municipalities"></div>
           <div id="map-legend" class="map-legend" aria-live="polite"></div>
         </div>
-        <aside class="town-panel" id="town-panel" aria-live="polite">
-          <p class="panel-kicker">SELECT A MUNICIPALITY</p>
-          <h3 id="town-name">Massachusetts</h3>
-          <p id="town-county">Click a town on the map to inspect its record.</p>
-          <dl>
-            <div><dt>Observed count</dt><dd id="town-observed">—</dd></div>
-            <div><dt>Observed presence</dt><dd id="town-observed-presence">—</dd></div>
-            <div><dt>Detection suitability</dt><dd id="town-probability">—</dd></div>
-            <div><dt>Suitability class</dt><dd id="town-class">—</dd></div>
-            <div><dt>Predicted expected count</dt><dd id="town-expected">—</dd></div>
-            <div><dt>Conditional count</dt><dd id="town-conditional">—</dd></div>
-            <div><dt>Prediction error</dt><dd id="town-error">—</dd></div>
-          </dl>
-          <div id="town-history" class="town-history" aria-label="Selected municipality annual history"></div>
+        <aside class="observation-panel" id="town-panel" aria-live="polite">
+          <div class="selection-summary">
+            <p class="panel-kicker">SELECTED MUNICIPALITIES</p>
+            <h3 id="town-name">Massachusetts</h3>
+            <p id="town-county">Click municipalities on the map to build a comparison.</p>
+            <button id="clear-town-selection" class="clear-town-selection" type="button" hidden>Clear selected towns</button>
+            <dl>
+              <div><dt>Selected-town reports</dt><dd id="town-observed">—</dd></div>
+              <div><dt>Parent-county reports</dt><dd id="county-observed">—</dd></div>
+              <div><dt>Selected months</dt><dd id="town-year-total">—</dd></div>
+              <div><dt>Detection window</dt><dd id="town-detection-window">—</dd></div>
+            </dl>
+          </div>
+          <div class="trend-panel">
+            <div class="trend-heading"><span>MONTHLY TREND</span><h3 id="trend-title">Reported-positive samples</h3></div>
+            <div id="town-history" class="town-history" aria-label="Selected municipality and county monthly history"></div>
+          </div>
         </aside>
+      </div>
+    </section>
+
+    <section class="correlations section-shell" id="correlations">
+      <div class="section-heading">
+        <div><span>02 · ENVIRONMENTAL RELATIONSHIPS</span><h2>Explore descriptive associations.</h2></div>
+        <p>Compare monthly environmental conditions and previous-year landscape characteristics with reported-positive samples. The year and county filters remain linked to the observation map.</p>
+      </div>
+      <div class="correlation-controls" aria-label="Correlation controls">
+        <label><span>Month</span><select id="correlation-month"><option value="All">June–September</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option></select></label>
+        <label><span>Outcome</span><select id="correlation-outcome"><option value="count">Reported-positive count</option><option value="presence">Detection presence</option></select></label>
+        <label><span>Environmental timing</span><select id="correlation-lag"><option value="same">Same month</option><option value="lag1">Previous month</option></select></label>
+        <label><span>Predictor</span><select id="correlation-predictor"></select></label>
+      </div>
+      <div class="correlation-takeaway"><span>KEY TAKEAWAY</span><p id="correlation-takeaway">Loading environmental relationships…</p></div>
+      <div class="level-comparison-grid relationship-comparison">
+        <article class="correlation-card relationship-card">
+          <div><span>TOWN LEVEL · SELECTED RELATIONSHIP</span><h3 id="town-relationship-title">Town environmental predictor and WNV reports</h3></div>
+          <div id="town-relationship-chart" class="correlation-chart" aria-label="Town-level environmental relationship"></div>
+          <div class="level-stats"><span>rₛ <strong id="town-rho">—</strong></span><span>p <strong id="town-p">—</strong></span><span>Significance <strong id="town-significance">—</strong></span><span>n <strong id="town-n">—</strong></span></div>
+        </article>
+        <article class="correlation-card relationship-card">
+          <div><span>COUNTY LEVEL · SELECTED RELATIONSHIP</span><h3 id="county-relationship-title">County environmental predictor and WNV reports</h3></div>
+          <div id="county-relationship-chart" class="correlation-chart" aria-label="County-level environmental relationship"></div>
+          <div class="level-stats"><span>rₛ <strong id="county-rho">—</strong></span><span>p <strong id="county-p">—</strong></span><span>Significance <strong id="county-significance">—</strong></span><span>n <strong id="county-n">—</strong></span></div>
+        </article>
+      </div>
+      <p class="correlation-note">*** p &lt; .001 · ** p &lt; .01 · * p &lt; .05 · ns not significant. Landscape factors use the previous year’s NLCD; county landscape values are area-weighted town summaries. Associations are descriptive; repeated observations, spatial dependence, correlated predictors, and unknown surveillance effort affect interpretation.</p>
+      <div class="level-comparison-grid ranking-comparison">
+        <article class="correlation-card ranking-card"><div><span>TOWN LEVEL · PREDICTOR COMPARISON</span><h3 id="town-ranking-title">Town correlation ranking</h3></div><div id="town-correlation-ranking" class="ranking-chart" aria-label="Town predictor correlation ranking"></div></article>
+        <article class="correlation-card ranking-card"><div><span>COUNTY LEVEL · PREDICTOR COMPARISON</span><h3 id="county-ranking-title">County correlation ranking</h3></div><div id="county-correlation-ranking" class="ranking-chart" aria-label="County predictor correlation ranking"></div></article>
       </div>
     </section>
 
     <section class="evaluation section-shell" id="evaluation">
       <div class="section-heading">
-        <div><span>02 · MODEL EVALUATION</span><h2>Performance before interpretation.</h2></div>
-        <p id="evaluation-copy">The model was trained on earlier years and evaluated on a temporal holdout. Threshold-dependent and ranking metrics answer different questions.</p>
+        <div><span>03 · MODEL PREDICTIONS AND EVALUATION</span><h2>Forecast first. Validate before interpretation.</h2></div>
+        <p id="evaluation-copy">The two-stage Random Forest uses previous-month environmental conditions, prior-year landscape, municipality area, and county identity. Choose a year to inspect its untouched rolling temporal holdout.</p>
+      </div>
+      <div class="prediction-controls">
+        <label><span>Holdout year</span><select id="prediction-year"><option value="2024">2024</option><option value="2025">2025</option><option value="2026" selected>2026</option></select></label>
+        <label><span>Map display</span><select id="prediction-metric"><option value="probability">Detection probability</option><option value="expected">Expected reported-positive count</option><option value="agreement">Observed–predicted agreement</option></select></label>
+        <div><span>Holdout period</span><strong id="prediction-period">September 2026</strong></div>
+        <div><span>Decision threshold</span><strong id="prediction-threshold">—</strong></div>
+        <div><span>Selected model</span><strong id="prediction-model-name">—</strong></div>
+      </div>
+      <p class="prediction-caveat">Predictions represent reported-detection suitability, not mosquito prevalence or human disease risk. Town and county identity can capture persistent geography and surveillance patterns, but they do not measure surveillance effort directly.</p>
+      <div class="prediction-layout">
+        <div class="prediction-map-card">
+          <div id="prediction-map" role="application" aria-label="Random Forest predictions by Massachusetts municipality"></div>
+          <div id="prediction-legend" class="map-legend prediction-legend" aria-live="polite"></div>
+        </div>
+        <aside class="prediction-detail">
+          <span>SELECTED VIEW</span><h3 id="prediction-place">Massachusetts</h3><p id="prediction-place-note">Click towns in either map to compare predictions.</p>
+          <dl>
+            <div><dt>Seasonal detection probability</dt><dd id="prediction-probability">—</dd></div>
+            <div><dt>Expected count</dt><dd id="prediction-expected">—</dd></div>
+            <div><dt>Observed count</dt><dd id="prediction-observed">—</dd></div>
+            <div><dt>Agreement</dt><dd id="prediction-agreement">—</dd></div>
+          </dl>
+          <div id="prediction-history" class="prediction-history" aria-label="Observed and predicted monthly results"></div>
+        </aside>
       </div>
       <div class="metric-grid" id="metric-grid"></div>
-      <p id="importance-note" class="importance-note">Permutation importance currently reflects the 2026 holdout model.</p>
+      <div class="model-context" id="model-context" aria-label="Selected holdout model details"></div>
+      <div class="model-flow" aria-label="Two-stage Random Forest model">
+        <div><span>AVAILABLE PREDICTORS</span><strong>Previous-month environment<br>Prior-year landscape<br>Area + county proxy</strong></div><i>→</i>
+        <div><span>STAGE 1</span><strong>Detection Random Forest</strong><small>Probability of a reported-positive month</small></div><i>×</i>
+        <div><span>STAGE 2</span><strong>Conditional-count Random Forest</strong><small>Count when a positive report occurs</small></div><i>→</i>
+        <div><span>OUTPUT</span><strong>Expected reported-positive count</strong><small>Probability × conditional count</small></div>
+      </div>
+      <p id="importance-note" class="importance-note">Permutation importance is calculated only on the 2026 holdout.</p>
       <div class="importance-grid" id="importance-grid">
-        <article class="chart-card"><div><span>PRESENCE MODEL</span><h3>Permutation importance</h3></div><div id="presence-importance" class="importance-chart"></div></article>
-        <article class="chart-card"><div><span>CONDITIONAL COUNT MODEL</span><h3>Permutation importance</h3></div><div id="abundance-importance" class="importance-chart"></div></article>
+        <article class="chart-card"><div><span>PRESENCE MODEL</span><h3 id="presence-importance-title">Permutation importance</h3></div><div id="presence-importance" class="importance-chart"></div></article>
+        <article class="chart-card"><div><span>CONDITIONAL COUNT MODEL</span><h3 id="count-importance-title">Permutation importance</h3></div><div id="abundance-importance" class="importance-chart"></div></article>
+      </div>
+      <div class="model-review-grid">
+        <article class="chart-card" id="model-comparison-card"><div><span>2026 MODEL ABLATION</span><h3>What do landscape and geographic proxies add?</h3></div><div id="model-comparison-chart" class="model-comparison-chart"></div></article>
+        <article class="chart-card error-card"><div><span>ERROR INSPECTION</span><h3 id="prediction-error-title">Largest 2026 disagreements</h3></div><div class="error-table-wrap"><table><thead><tr><th>Town</th><th>Month</th><th>Observed</th><th>Expected</th><th>Class</th></tr></thead><tbody id="prediction-error-table"></tbody></table></div></article>
       </div>
     </section>
 
     <section class="methods section-shell" id="methods">
       <div class="section-heading">
-        <div><span>03 · READING GUIDE</span><h2>What this dashboard can—and cannot—say.</h2></div>
+        <div><span>04 · READING GUIDE</span><h2>What this dashboard can—and cannot—say.</h2></div>
       </div>
       <div class="method-grid">
         <article><span>OUTCOME</span><h3>Reported-positive detection</h3><p>The outcome is the number of reported WNV-positive mosquito samples in each municipality. A zero is not proof that the municipality was sampled and found negative.</p></article>
         <article><span>TWO-STAGE MODEL</span><h3>Presence, then count</h3><p>The expected count multiplies the modeled presence probability by the predicted count conditional on reported-positive presence.</p></article>
-        <article><span>PREDICTORS</span><h3>Available before prediction</h3><p>Holdout models use February–May environmental conditions and prior-year landscape predictors. June–September variables are excluded.</p></article>
+        <article><span>PREDICTORS</span><h3>Available before prediction</h3><p>Each June–September prediction uses the preceding month’s environmental conditions, prior-year landscape, municipality area, and county identity. No target-month environmental value is used.</p></article>
         <article><span>LIMIT</span><h3>Relative suitability</h3><p>Unknown surveillance effort prevents interpretation as absolute WNV prevalence, mosquito abundance, or human disease risk.</p></article>
       </div>
       <div class="source-note">
@@ -125,6 +203,6 @@
 
   <footer><p>Vanchy Li · Geospatial researcher</p><div><a href="../works.html">Research</a><a href="#top">Back to top ↑</a></div></footer>
   <div id="loading" class="loading" role="status">Loading validated dashboard data…</div>
-  <script src="js/wnv-dashboard-v2.js?v=20261020"></script>
+  <script src="js/wnv-dashboard-v2.js?v=rf-importance-years-1"></script>
 </body>
 </html>
