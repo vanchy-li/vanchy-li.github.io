@@ -94,3 +94,20 @@
 .methods .method-grid article{background:#f7f9fb}
 .methods .source-note{border-color:rgba(28,63,91,.25)}
 .methods .source-note a{color:#234f73;font-weight:500}
+
+/* Observed detections uses orange consistently throughout the explorer. */
+#observations{background:#fffaf5}
+#observations .section-heading span{color:#a84b12}
+#observations .observation-controls{background:#f7e6d6;border-color:rgba(168,75,18,.28)}
+#observations .observation-controls button{background:#a84b12;border-color:#a84b12}
+#observations .timeline{background:#fff8f1;border-color:rgba(168,75,18,.25)}
+#observations .timeline-current span{color:#a84b12}
+#observations .timeline input{accent-color:#e67826}
+#observations .timeline-note{color:#8b5a3b}
+#observations .surveillance-caveat{background:#f8ede3;color:#765441;border-color:rgba(168,75,18,.25)}
+#observations .observed-layout{border-color:rgba(168,75,18,.25)}
+#observations .map-card{background:#f4e5d8}
+#wnv-map.leaflet-container{background:radial-gradient(circle at 72% 30%,#fff8f1 0,#f8eadf 42%,#efd8c6 100%)}
+#observations .map-legend{border-color:rgba(168,75,18,.28);box-shadow:0 5px 25px rgba(125,62,18,.14)}
+#observations .selection-summary{background:#f8e8da}
+#observations .trend-heading span{color:#a84b12}

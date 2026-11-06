@@ -214,7 +214,7 @@ function styleFeature(feature) {
   const selected = state.selectedIds.has(Number(record.TOWN_ID));
   return {
     fillColor: observedColor(record.WNV_count), fillOpacity: visible ? 0.88 : 0.08,
-    color: selected ? "#151515" : visible ? "#8c9691" : "#c2c8c5",
+    color: selected ? "#6f2f08" : visible ? "#b07a56" : "#d8c0af",
     weight: selected ? 2.4 : 0.6, opacity: visible ? 1 : 0.3,
   };
 }
@@ -301,7 +301,7 @@ function renderTrend(town) {
   document.querySelector("#trend-title").textContent = `${town.Town} and ${town.County} County, ${selectedYearLabel()}`;
   Plotly.react("town-history", [
     {type:"scatter",mode:"lines+markers",name:town.Town,x:labels,y:state.months.map(month => townValues.get(month) || 0),line:{color:"#bd4f12",width:3},marker:{size:7}},
-    {type:"scatter",mode:"lines+markers",name:`${town.County} County`,x:labels,y:state.months.map(month => countyValues.get(month) || 0),line:{color:"#294f46",width:2,dash:"dot"},marker:{size:6}},
+    {type:"scatter",mode:"lines+markers",name:`${town.County} County`,x:labels,y:state.months.map(month => countyValues.get(month) || 0),line:{color:"#e18a4b",width:2,dash:"dot"},marker:{size:6}},
   ], {
     margin:{l:50,r:18,t:44,b:44},paper_bgcolor:"transparent",plot_bgcolor:"transparent",
     font:{family:"Manrope, sans-serif",color:"#122623",size:10},
@@ -329,7 +329,7 @@ function renderSelectionTrend(towns) {
   document.querySelector("#trend-title").textContent=`${towns.length} selected municipalities and ${counties.length} parent ${counties.length===1?"county":"counties"}, ${selectedYearLabel()}`;
   Plotly.react("town-history",[
     {type:"scatter",mode:"lines+markers",name:`Selected towns (${towns.length})`,x:labels,y:townValues,line:{color:"#bd4f12",width:3},marker:{size:7}},
-    {type:"scatter",mode:"lines+markers",name:`Parent counties (${counties.length})`,x:labels,y:countyValues,line:{color:"#294f46",width:2,dash:"dot"},marker:{size:6}},
+    {type:"scatter",mode:"lines+markers",name:`Parent counties (${counties.length})`,x:labels,y:countyValues,line:{color:"#e18a4b",width:2,dash:"dot"},marker:{size:6}},
   ],{
     margin:{l:50,r:18,t:44,b:44},paper_bgcolor:"transparent",plot_bgcolor:"transparent",
     font:{family:"Manrope, sans-serif",color:"#122623",size:10},
@@ -410,7 +410,7 @@ function drawMap() {
   state.geoLayer = L.geoJSON(state.boundaries,{style:styleFeature,onEachFeature}).addTo(state.map);
   state.countyLayer = L.geoJSON(state.countyBoundaries,{
     interactive:false,
-    style:{fill:false,color:"#405a51",weight:1.55,opacity:0.82},
+    style:{fill:false,color:"#8f4b22",weight:1.55,opacity:0.82},
   }).addTo(state.map);
   state.map.fitBounds(state.geoLayer.getBounds(),{padding:[16,16]});
   updateLegend();
