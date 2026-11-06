@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css?v=20261020" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles/wnv-dashboard.css?v=rf-importance-years-1">
+  <link rel="stylesheet" href="styles/wnv-dashboard.css?v=prediction-timeline-1">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 </head>
@@ -147,6 +147,18 @@
         <div><span>Decision threshold</span><strong id="prediction-threshold">—</strong></div>
         <div><span>Selected model</span><strong id="prediction-model-name">—</strong></div>
       </div>
+      <div class="prediction-timeline" aria-label="Model prediction month range">
+        <div class="prediction-timeline-current"><span id="prediction-timeline-year">2026</span><strong id="prediction-timeline-period">June–September</strong></div>
+        <div class="prediction-range-controls">
+          <label><span>Range start · <strong id="prediction-month-start-label">June</strong></span><div class="timeline-slider-stack"><input id="prediction-month-start-slider" type="range" min="0" max="3" step="1" value="0" aria-label="Select prediction range start month"><div class="timeline-slider-labels" aria-hidden="true"><i>Jun</i><i>Jul</i><i>Aug</i><i>Sep</i></div></div></label>
+          <label><span>Range end · <strong id="prediction-month-end-label">September</strong></span><div class="timeline-slider-stack"><input id="prediction-month-end-slider" type="range" min="0" max="3" step="1" value="3" aria-label="Select prediction range end month"><div class="timeline-slider-labels" aria-hidden="true"><i>Jun</i><i>Jul</i><i>Aug</i><i>Sep</i></div></div></label>
+        </div>
+        <div class="prediction-timeline-actions">
+          <button id="prediction-play-timeline" class="play-button" type="button" aria-pressed="false"><span aria-hidden="true">▶</span> Play</button>
+          <button id="prediction-clear-town-selection" class="clear-town-selection" type="button" hidden>Clear selected towns</button>
+        </div>
+        <p id="prediction-timeline-note">Prediction controls and selected towns are independent from Observations and Correlations.</p>
+      </div>
       <p class="prediction-caveat">Predictions represent reported-detection suitability, not mosquito prevalence or human disease risk. Town and county identity can capture persistent geography and surveillance patterns, but they do not measure surveillance effort directly.</p>
       <div class="prediction-layout">
         <div class="prediction-map-card">
@@ -154,7 +166,7 @@
           <div id="prediction-legend" class="map-legend prediction-legend" aria-live="polite"></div>
         </div>
         <aside class="prediction-detail">
-          <span>SELECTED VIEW</span><h3 id="prediction-place">Massachusetts</h3><p id="prediction-place-note">Click towns in either map to compare predictions.</p>
+          <span>SELECTED VIEW</span><h3 id="prediction-place">Massachusetts</h3><p id="prediction-place-note">Click towns in the prediction map to compare them.</p>
           <dl>
             <div><dt>Seasonal detection probability</dt><dd id="prediction-probability">—</dd></div>
             <div><dt>Expected count</dt><dd id="prediction-expected">—</dd></div>
@@ -203,6 +215,6 @@
 
   <footer><p>Vanchy Li · Geospatial researcher</p><div><a href="../works.html">Research</a><a href="#top">Back to top ↑</a></div></footer>
   <div id="loading" class="loading" role="status">Loading validated dashboard data…</div>
-  <script src="js/wnv-dashboard-v2.js?v=rf-importance-years-1"></script>
+  <script src="js/wnv-dashboard-v2.js?v=prediction-timeline-1"></script>
 </body>
 </html>

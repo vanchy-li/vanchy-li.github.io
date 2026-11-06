@@ -10,6 +10,7 @@ const state = {
   metrics: [], metricIndex: new Map(), metadata: null, importance: null,
   predictions: [], modelComparison: [], rollingMetrics: [], rfPresenceImportance: [], rfCountImportance: [], rollingPresenceImportance: [], rollingCountImportance: [], rfMetadata: null, rollingMetadata: null,
   predictionYear: 2026, predictionMetric: "probability", predictionMap: null, predictionLayer: null,
+  predictionMonth: 9, predictionMonthStart: 6, predictionMonthEnd: 9, predictionSelectedIds: new Set(), predictionPlayTimer: null,
   years: [], year: 2026, yearStart: 2026, yearEnd: 2026,
   months: [6, 7, 8, 9], month: 9, monthStart: 9, monthEnd: 9,
   county: "All", selectedId: null, selectedIds: new Set(), map: null, geoLayer: null, countyLayer: null,
@@ -100,6 +101,9 @@ function stateRecord(year, month) { return state.stateIndex.get(key(year, month)
 function selectedMonths() {
   return state.months.filter(month=>month>=state.monthStart && month<=state.monthEnd);
 }
+function predictionSelectedMonths() {
+  return state.months.filter(month=>month>=state.predictionMonthStart&&month<=state.predictionMonthEnd);
+}
 function selectedYears() {
   return state.years.filter(year=>year>=state.yearStart && year<=state.yearEnd);
 }
@@ -119,6 +123,11 @@ function selectedPeriodLabel() {
   return state.monthStart===state.monthEnd
     ? MONTH_NAMES[state.monthStart-1]
     : `${MONTH_NAMES[state.monthStart-1]}–${MONTH_NAMES[state.monthEnd-1]}`;
+}
+function predictionPeriodLabel() {
+  return state.predictionMonthStart===state.predictionMonthEnd
+    ? MONTH_NAMES[state.predictionMonthStart-1]
+    : `${MONTH_NAMES[state.predictionMonthStart-1]}–${MONTH_NAMES[state.predictionMonthEnd-1]}`;
 }
 
 function sumRecords(rows, fallback={}) {
@@ -152,6 +161,13 @@ function selectedTownMetadata() {
     .filter(row => state.selectedIds.has(Number(row.TOWN_ID)))
     .map(row => [Number(row.TOWN_ID), {TOWN_ID:Number(row.TOWN_ID),Town:row.Town,County:row.County}]))
     .values()].sort((a,b) => a.Town.localeCompare(b.Town));
+}
+
+function predictionSelectedTownMetadata() {
+  return [...new Map(state.townRows
+    .filter(row=>state.predictionSelectedIds.has(Number(row.TOWN_ID)))
+    .map(row=>[Number(row.TOWN_ID),{TOWN_ID:Number(row.TOWN_ID),Town:row.Town,County:row.County}]))
+    .values()].sort((a,b)=>a.Town.localeCompare(b.Town));
 }
 
 function selectedCountyNames() {
@@ -366,7 +382,6 @@ function selectTown(townId, openPopup = false) {
   state.geoLayer.setStyle(styleFeature);
   renderSelectedTown();
   renderCorrelation();
-  renderPrediction();
   if (openPopup) state.geoLayer.eachLayer(layer => {
     if (Number(layer.feature.properties.TOWN_ID) === id) layer.openPopup();
   });
@@ -379,7 +394,6 @@ function clearTownSelection() {
   state.geoLayer.setStyle(styleFeature);
   renderSelectedTown();
   renderCorrelation();
-  renderPrediction();
 }
 
 function onEachFeature(feature, layer) {
@@ -672,7 +686,7 @@ function populateCorrelationControls() {
 }
 
 function predictionTownAggregate(townId) {
-  const rows=state.predictions.filter(row=>row.year===state.predictionYear&&row.Town_id===Number(townId)&&selectedMonths().includes(row.month));
+  const rows=state.predictions.filter(row=>row.year===state.predictionYear&&row.Town_id===Number(townId)&&predictionSelectedMonths().includes(row.month));
   if (!rows.length) return null;
   const probability=1-rows.reduce((product,row)=>product*(1-Number(row.detection_probability||0)),1);
   const predicted=rows.some(row=>Number(row.predicted_presence)===1);
@@ -698,7 +712,7 @@ function predictionFeatureAggregate(feature) { return predictionTownAggregate(fe
 function predictionStyle(feature) {
   const aggregate=predictionFeatureAggregate(feature);
   const visible=state.county==="All"||feature.properties.County===state.county;
-  const selected=state.selectedIds.has(Number(feature.properties.TOWN_ID));
+  const selected=state.predictionSelectedIds.has(Number(feature.properties.TOWN_ID));
   const value=state.predictionMetric==="probability"?aggregate?.probability:state.predictionMetric==="expected"?aggregate?.expected:aggregate?.agreement;
   return {fillColor:predictionColor(value,state.predictionMetric),fillOpacity:visible?0.9:0.08,color:selected?"#111":visible?"#73827d":"#bdc7c2",weight:selected?2.5:0.65,opacity:visible?1:0.25};
 }
@@ -706,7 +720,7 @@ function predictionStyle(feature) {
 function predictionPopup(feature) {
   const a=predictionFeatureAggregate(feature);
   if (!a) return `<strong>${escapeHtml(feature.properties.Town)}</strong><br>No ${state.predictionYear} prediction`;
-  return `<strong>${escapeHtml(a.town)}</strong><br>${escapeHtml(a.county)} County<br>${escapeHtml(selectedPeriodLabel())} ${state.predictionYear}<br><br>`+
+  return `<strong>${escapeHtml(a.town)}</strong><br>${escapeHtml(a.county)} County<br>${escapeHtml(predictionPeriodLabel())} ${state.predictionYear}<br><br>`+
     `<strong>${(a.probability*100).toFixed(1)}%</strong> seasonal detection probability<br>`+
     `${a.expected.toFixed(2)} expected · ${a.observedCount.toLocaleString()} observed<br>${escapeHtml(a.agreement)}`;
 }
@@ -716,31 +730,78 @@ function renderPredictionLegend() {
   if (state.predictionMetric==="agreement") {title="Observed–predicted agreement";entries=[["True positive","#237b68"],["True negative","#dfe5e1"],["False positive","#e3a43b"],["False negative","#c92535"]];}
   else if (state.predictionMetric==="expected") {title="Expected reported-positive count";entries=[["0–0.10","#fff3e8"],["0.11–0.50","#fdd0a2"],["0.51–1.00","#fdae6b"],["1.01–2.00","#f16913"],["> 2.00","#a63603"]];}
   else {title="Seasonal detection probability";entries=[["< 10%","#e8f3f0"],["10–24%","#b9ddd4"],["25–49%","#72b7a7"],["50–74%","#2f8875"],["≥ 75%","#0e5548"]];}
-  document.querySelector("#prediction-legend").innerHTML=`<strong>${title} · ${escapeHtml(selectedPeriodLabel())} ${state.predictionYear}</strong>`+entries.map(([label,color])=>`<div class="legend-row"><i class="legend-swatch" style="background:${color}"></i><span>${label}</span></div>`).join("");
+  document.querySelector("#prediction-legend").innerHTML=`<strong>${title} · ${escapeHtml(predictionPeriodLabel())} ${state.predictionYear}</strong>`+entries.map(([label,color])=>`<div class="legend-row"><i class="legend-swatch" style="background:${color}"></i><span>${label}</span></div>`).join("");
 }
 
 function drawPredictionMap() {
   state.predictionMap=L.map("prediction-map",{zoomControl:true,scrollWheelZoom:false}).setView([42.25,-71.8],7);
   state.predictionLayer=L.geoJSON(state.boundaries,{style:predictionStyle,onEachFeature:(feature,layer)=>{
     layer.bindPopup(()=>predictionPopup(feature));
-    layer.on({click:()=>selectTown(feature.properties.TOWN_ID),mouseover:event=>event.target.setStyle({weight:2,color:"#122623"}),mouseout:()=>state.predictionLayer.setStyle(predictionStyle)});
+    layer.on({click:()=>selectPredictionTown(feature.properties.TOWN_ID),mouseover:event=>event.target.setStyle({weight:2,color:"#122623"}),mouseout:()=>state.predictionLayer.setStyle(predictionStyle)});
   }}).addTo(state.predictionMap);
   L.geoJSON(state.countyBoundaries,{interactive:false,style:{fill:false,color:"#405a51",weight:1.5,opacity:.8}}).addTo(state.predictionMap);
   state.predictionMap.fitBounds(state.predictionLayer.getBounds(),{padding:[16,16]});
 }
 
+function selectPredictionTown(townId,openPopup=false) {
+  stopPredictionPlayback();
+  const id=Number(townId);
+  if (state.predictionSelectedIds.has(id)) state.predictionSelectedIds.delete(id); else state.predictionSelectedIds.add(id);
+  renderPrediction();
+  if (openPopup) state.predictionLayer.eachLayer(layer=>{
+    if (Number(layer.feature.properties.TOWN_ID)===id) layer.openPopup();
+  });
+}
+
+function clearPredictionTownSelection() {
+  state.predictionSelectedIds.clear();
+  renderPrediction();
+}
+
+function setPredictionMonthRange(startMonth,endMonth) {
+  state.predictionMonthStart=Number(startMonth);
+  state.predictionMonthEnd=Number(endMonth);
+  state.predictionMonth=state.predictionMonthEnd;
+  document.querySelector("#prediction-month-start-slider").value=String(state.months.indexOf(state.predictionMonthStart));
+  document.querySelector("#prediction-month-end-slider").value=String(state.months.indexOf(state.predictionMonthEnd));
+  renderPrediction();
+}
+
+function setPredictionMonth(month) { setPredictionMonthRange(month,month); }
+
+function stopPredictionPlayback() {
+  if (state.predictionPlayTimer) window.clearInterval(state.predictionPlayTimer);
+  state.predictionPlayTimer=null;
+  const button=document.querySelector("#prediction-play-timeline");
+  if (!button) return;
+  button.classList.remove("is-playing");button.setAttribute("aria-pressed","false");
+  button.innerHTML='<span aria-hidden="true">▶</span> Play';
+}
+
+function togglePredictionPlayback() {
+  if (state.predictionPlayTimer) {stopPredictionPlayback();return;}
+  if (state.predictionMonth===state.months[state.months.length-1]) setPredictionMonth(state.months[0]);
+  const button=document.querySelector("#prediction-play-timeline");
+  button.classList.add("is-playing");button.setAttribute("aria-pressed","true");
+  button.innerHTML='<span aria-hidden="true">Ⅱ</span> Pause';
+  state.predictionPlayTimer=window.setInterval(()=>{
+    const current=state.months.indexOf(state.predictionMonth);
+    setPredictionMonth(state.months[(current+1)%state.months.length]);
+  },1400);
+}
+
 function renderPredictionDetail() {
   const availableIds=[...new Set(state.predictions.filter(row=>row.year===state.predictionYear&&(state.county==="All"||row.county===state.county)).map(row=>row.Town_id))];
-  const ids=state.selectedIds.size?[...state.selectedIds]:availableIds;
+  const ids=state.predictionSelectedIds.size?[...state.predictionSelectedIds]:availableIds;
   const aggregates=ids.map(predictionTownAggregate).filter(Boolean);
   if (!aggregates.length) return;
   const probability=aggregates.reduce((sum,row)=>sum+row.probability,0)/aggregates.length;
   const expected=aggregates.reduce((sum,row)=>sum+row.expected,0);
   const observed=aggregates.reduce((sum,row)=>sum+row.observedCount,0);
   const counts=Object.fromEntries(["True positive","True negative","False positive","False negative"].map(label=>[label,aggregates.filter(row=>row.agreement===label).length]));
-  const towns=selectedTownMetadata();
+  const towns=predictionSelectedTownMetadata();
   document.querySelector("#prediction-place").textContent=towns.length===1?towns[0].Town:towns.length?`${towns.length} selected municipalities`:state.county==="All"?"Massachusetts":`${state.county} County`;
-  document.querySelector("#prediction-place-note").textContent=`${selectedPeriodLabel()} ${state.predictionYear} · ${aggregates.length} municipalit${aggregates.length===1?"y":"ies"}`;
+  document.querySelector("#prediction-place-note").textContent=`${predictionPeriodLabel()} ${state.predictionYear} · ${aggregates.length} municipalit${aggregates.length===1?"y":"ies"}`;
   document.querySelector("#prediction-probability").textContent=`${(probability*100).toFixed(1)}% mean`;
   document.querySelector("#prediction-expected").textContent=expected.toFixed(2);
   document.querySelector("#prediction-observed").textContent=observed.toLocaleString();
@@ -751,10 +812,10 @@ function renderPredictionDetail() {
   });
   const labels=monthRows.map(row=>MONTH_NAMES[row.month-1].slice(0,3));
   Plotly.react("prediction-history",[
-    {type:"bar",name:"Observed",x:labels,y:monthRows.map(row=>row.observed),marker:{color:"#122623"}},
-    {type:"bar",name:"Expected",x:labels,y:monthRows.map(row=>row.expected),marker:{color:"#e89042"}},
+    {type:"bar",name:"Observed",x:labels,y:monthRows.map(row=>row.observed),marker:{color:monthRows.map(row=>predictionSelectedMonths().includes(row.month)?"#122623":"#c9cfcc")}},
+    {type:"bar",name:"Expected",x:labels,y:monthRows.map(row=>row.expected),marker:{color:monthRows.map(row=>predictionSelectedMonths().includes(row.month)?"#e89042":"#f1d8c2")}},
     {type:"scatter",mode:"lines+markers",name:"Mean probability",x:labels,y:monthRows.map(row=>row.probability*100),yaxis:"y2",line:{color:"#237b68",width:2}},
-  ],{margin:{l:45,r:48,t:44,b:40},paper_bgcolor:"transparent",plot_bgcolor:"transparent",font:{family:"Manrope, sans-serif",size:9,color:"#122623"},barmode:"group",legend:{orientation:"h",x:0,y:1.18},xaxis:{fixedrange:true},yaxis:{title:"Count",rangemode:"tozero",gridcolor:"rgba(18,38,35,.1)",fixedrange:true},yaxis2:{title:"Probability (%)",overlaying:"y",side:"right",range:[0,100],fixedrange:true}}, {responsive:true,displayModeBar:false});
+  ],{margin:{l:45,r:48,t:44,b:40},paper_bgcolor:"transparent",plot_bgcolor:"transparent",font:{family:"Manrope, sans-serif",size:9,color:"#122623"},barmode:"group",legend:{orientation:"h",x:0,y:1.18},xaxis:{fixedrange:true},yaxis:{title:"Count",rangemode:"tozero",gridcolor:"rgba(18,38,35,.1)",fixedrange:true},yaxis2:{title:"Probability (%)",overlaying:"y",side:"right",range:[0,100],fixedrange:true},shapes:[{type:"line",xref:"x",x0:labels[state.months.indexOf(state.predictionMonthStart)],x1:labels[state.months.indexOf(state.predictionMonthStart)],yref:"paper",y0:0,y1:1,line:{color:"#d99158",width:1,dash:"dot"}},{type:"line",xref:"x",x0:labels[state.months.indexOf(state.predictionMonthEnd)],x1:labels[state.months.indexOf(state.predictionMonthEnd)],yref:"paper",y0:0,y1:1,line:{color:"#d99158",width:1,dash:"dot"}}]}, {responsive:true,displayModeBar:false});
 }
 
 function activeMetricRow() {
@@ -776,9 +837,16 @@ function updateYearSpecificModelPanels() {
 
 function renderPrediction() {
   if (!state.predictions.length||!document.querySelector("#prediction-map")) return;
-  document.querySelector("#prediction-period").textContent=`${selectedPeriodLabel()} ${state.predictionYear}`;
+  document.querySelector("#prediction-period").textContent=`${predictionPeriodLabel()} ${state.predictionYear}`;
   document.querySelector("#prediction-threshold").textContent=`${(activePredictionThreshold()*100).toFixed(1)}% monthly`;
   document.querySelector("#prediction-model-name").textContent="Environment + landscape + county";
+  document.querySelector("#prediction-timeline-year").textContent=String(state.predictionYear);
+  document.querySelector("#prediction-timeline-period").textContent=predictionPeriodLabel();
+  document.querySelector("#prediction-month-start-label").textContent=MONTH_NAMES[state.predictionMonthStart-1];
+  document.querySelector("#prediction-month-end-label").textContent=MONTH_NAMES[state.predictionMonthEnd-1];
+  const clearButton=document.querySelector("#prediction-clear-town-selection");
+  clearButton.hidden=state.predictionSelectedIds.size===0;
+  clearButton.textContent=state.predictionSelectedIds.size>1?`Clear ${state.predictionSelectedIds.size} selected towns`:"Clear selected town";
   if (!state.predictionMap) drawPredictionMap();
   state.predictionLayer.eachLayer(layer=>layer.setPopupContent(predictionPopup(layer.feature)));
   state.predictionLayer.setStyle(predictionStyle);
@@ -838,9 +906,9 @@ function renderModelComparison() {
 function renderPredictionErrors() {
   if (!state.predictions.length) return;
   document.querySelector("#prediction-error-title").textContent=`Largest ${state.predictionYear} disagreements`;
-  const rows=state.predictions.filter(row=>row.year===state.predictionYear&&selectedMonths().includes(row.month)&&(state.county==="All"||row.county===state.county)).map(row=>({...row,classLabel:Number(row.predicted_presence)?(Number(row.WNV_presence)?"TP":"FP"):(Number(row.WNV_presence)?"FN":"TN"),error:Math.abs(Number(row.WNV_positive_monthly)-Number(row.expected_count))})).sort((a,b)=>(b.classLabel==="FN")-(a.classLabel==="FN")||b.error-a.error).slice(0,10);
+  const rows=state.predictions.filter(row=>row.year===state.predictionYear&&predictionSelectedMonths().includes(row.month)&&(state.county==="All"||row.county===state.county)).map(row=>({...row,classLabel:Number(row.predicted_presence)?(Number(row.WNV_presence)?"TP":"FP"):(Number(row.WNV_presence)?"FN":"TN"),error:Math.abs(Number(row.WNV_positive_monthly)-Number(row.expected_count))})).sort((a,b)=>(b.classLabel==="FN")-(a.classLabel==="FN")||b.error-a.error).slice(0,10);
   document.querySelector("#prediction-error-table").innerHTML=rows.map(row=>`<tr><td><button type="button" data-town-id="${row.Town_id}">${escapeHtml(row.town)}</button></td><td>${MONTH_NAMES[row.month-1].slice(0,3)}</td><td>${row.WNV_positive_monthly}</td><td>${Number(row.expected_count).toFixed(2)}</td><td><span class="error-class ${row.classLabel.toLowerCase()}">${row.classLabel}</span></td></tr>`).join("");
-  document.querySelectorAll("#prediction-error-table button").forEach(button=>button.addEventListener("click",()=>selectTown(button.dataset.townId,true)));
+  document.querySelectorAll("#prediction-error-table button").forEach(button=>button.addEventListener("click",()=>selectPredictionTown(button.dataset.townId,true)));
 }
 
 function populateControls() {
@@ -866,6 +934,7 @@ function populateControls() {
       const allowedIds=new Set(state.townRows.filter(row=>row.County===state.county).map(row=>Number(row.TOWN_ID)));
       [...state.selectedIds].forEach(id=>{if(!allowedIds.has(id))state.selectedIds.delete(id);});
       state.selectedId=[...state.selectedIds].at(-1)??null;
+      [...state.predictionSelectedIds].forEach(id=>{if(!allowedIds.has(id))state.predictionSelectedIds.delete(id);});
     }
     populateTownSelect(); refreshMap(); fitCounty(); renderSelectedTown(); renderCorrelation(); renderPrediction();
   });
@@ -887,9 +956,22 @@ function populateControls() {
   document.querySelector("#download-view").addEventListener("click",downloadDisplayedData);
   document.querySelector("#prediction-metric").addEventListener("change",event=>{state.predictionMetric=event.target.value;renderPrediction();});
   document.querySelector("#prediction-year").addEventListener("change",event=>{
+    stopPredictionPlayback();
     state.predictionYear=Number(event.target.value);
     renderMetrics();renderPrediction();updateYearSpecificModelPanels();
   });
+  document.querySelector("#prediction-month-start-slider").addEventListener("input",event=>{
+    stopPredictionPlayback();
+    const start=state.months[Number(event.target.value)];
+    setPredictionMonthRange(start,Math.max(start,state.predictionMonthEnd));
+  });
+  document.querySelector("#prediction-month-end-slider").addEventListener("input",event=>{
+    stopPredictionPlayback();
+    const end=state.months[Number(event.target.value)];
+    setPredictionMonthRange(Math.min(state.predictionMonthStart,end),end);
+  });
+  document.querySelector("#prediction-play-timeline").addEventListener("click",togglePredictionPlayback);
+  document.querySelector("#prediction-clear-town-selection").addEventListener("click",clearPredictionTownSelection);
   populateTownSelect();
 }
 
