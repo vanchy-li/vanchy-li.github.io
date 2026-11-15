@@ -154,6 +154,48 @@
 .reveal .slides section.findings-slide li {
   margin-bottom: 0.8em;
 }
+.reveal .slides section.findings-slide .findings-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 1.35em;
+  align-items: center;
+  width: 100%;
+}
+.reveal .slides section.findings-slide .findings-note {
+  min-width: 0;
+}
+.reveal .slides section.findings-slide .findings-note .callout {
+  margin: 0;
+}
+.reveal .slides section.findings-slide .dashboard-link {
+  margin: 0.55em 0 0;
+  font-size: 0.76em;
+}
+.reveal .slides section.findings-slide .findings-qr {
+  text-align: center;
+}
+.reveal .slides section.findings-slide .findings-qr p:has(> img) {
+  margin: 0;
+}
+.reveal .slides section.findings-slide .findings-qr img {
+  display: block;
+  width: 178px;
+  max-width: 100%;
+  max-height: none;
+  margin: 0 auto;
+  padding: 7px;
+  border: 1px solid #c9c2b9;
+  background: #ffffff;
+}
+.reveal .slides section.findings-slide .findings-qr p:last-child {
+  margin: 0.38em 0 0;
+  color: #a34b13;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 .reveal .slides section.references-slide #refs {
   max-height: 650px;
   overflow-y: auto;
