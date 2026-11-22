@@ -90,6 +90,7 @@
   margin: 0.65em 0 1.05em;
 }
 .reveal .slides section.correlation-scope-slide.present,
+.reveal .slides section.county-top3-slide.present,
 .reveal .slides section.holdout-slide.present {
   height: 100%;
   display: flex !important;
@@ -99,6 +100,143 @@
 .reveal .slides section.correlation-scope-slide p:has(> img),
 .reveal .slides section.holdout-slide p:has(> img) {
   text-align: center;
+}
+.reveal .slides section.county-top3-slide h2 {
+  margin-bottom: 0.3em;
+}
+.reveal .slides section.county-top3-slide .county-top3-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin: 0 0 0.55em 0.75em;
+  color: #667771;
+  font-size: 0.55em;
+}
+.reveal .slides section.county-top3-slide .county-top3-meta p {
+  margin: 0;
+}
+.reveal .slides section.county-top3-slide .county-top3-legend {
+  display: flex;
+  align-items: center;
+  gap: 1.05em;
+  white-space: nowrap;
+}
+.reveal .slides section.county-top3-slide .county-top3-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32em;
+}
+.reveal .slides section.county-top3-slide .county-top3-legend i {
+  display: inline-block;
+  width: 1.65em;
+  height: 0.38em;
+}
+.reveal .slides section.county-top3-slide .county-top3-legend .positive {
+  background: #76549a;
+}
+.reveal .slides section.county-top3-slide .county-top3-legend .negative {
+  background: #54a19a;
+}
+.reveal .slides section.county-top3-slide .county-top3-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1.8em;
+  width: 100%;
+}
+.reveal .slides section.county-top3-slide .county-top3-column {
+  min-width: 0;
+}
+.reveal .slides section.county-top3-slide .county-top3-county {
+  display: grid;
+  grid-template-columns: 4.25em minmax(0, 1fr);
+  height: 2.72em;
+  padding: 0.2em 0;
+  border-top: 1px solid #d8d3cb;
+}
+.reveal .slides section.county-top3-slide .county-top3-column .county-top3-county:first-child {
+  border-top: 2px solid #aeb7b2;
+}
+.reveal .slides section.county-top3-slide .county-top3-name {
+  padding-top: 0.12em;
+  color: #b64f13;
+  font-family: "Courier New", monospace;
+  font-size: 0.53em;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+.reveal .slides section.county-top3-slide .county-top3-vars {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  row-gap: 0.05em;
+}
+.reveal .slides section.county-top3-slide .county-top3-var {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5.2em 2.15em;
+  align-items: center;
+  column-gap: 0.32em;
+  min-height: 0;
+  font-size: 0.48em;
+}
+.reveal .slides section.county-top3-slide .county-top3-var > span {
+  white-space: nowrap;
+}
+.reveal .slides section.county-top3-slide .county-top3-var small {
+  color: #71817c;
+  font-size: 0.75em;
+}
+.reveal .slides section.county-top3-slide .county-top3-var b {
+  position: relative;
+  display: block;
+  height: 0.55em;
+  border-bottom: 1px solid #d3cec6;
+  font-weight: 400;
+}
+.reveal .slides section.county-top3-slide .county-top3-var b::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.08em;
+  width: 1px;
+  height: 0.68em;
+  background: #65746f;
+}
+.reveal .slides section.county-top3-slide .county-top3-var b i {
+  position: absolute;
+  top: 0.07em;
+  height: 0.36em;
+}
+.reveal .slides section.county-top3-slide .county-top3-var b i.pos {
+  left: 50%;
+  background: #76549a;
+}
+.reveal .slides section.county-top3-slide .county-top3-var b i.neg {
+  right: 50%;
+  background: #54a19a;
+}
+.reveal .slides section.county-top3-slide .county-top3-var code {
+  padding: 0;
+  color: #172b27;
+  background: transparent;
+  font-size: 0.88em;
+  text-align: right;
+}
+.reveal .slides section.county-top3-slide .county-top3-county.unavailable {
+  align-items: center;
+}
+.reveal .slides section.county-top3-slide .county-top3-empty {
+  color: #71817c;
+  font-size: 0.45em;
+  font-style: italic;
+}
+.reveal .slides section.county-top3-slide .county-top3-note {
+  margin: 0.55em 0 0 0.75em;
+  color: #667771;
+  font-size: 0.52em;
+}
+.reveal .slides section.county-top3-slide .county-top3-note strong {
+  color: #b64f13;
 }
 .reveal .slides section.holdout-slide table {
   width: 88%;
