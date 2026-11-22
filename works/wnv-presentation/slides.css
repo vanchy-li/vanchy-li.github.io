@@ -238,6 +238,28 @@
 .reveal .slides section.county-top3-slide .county-top3-note strong {
   color: #b64f13;
 }
+.reveal .slides section.county-seat-slide.present {
+  height: 100%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.reveal .slides section.county-seat-slide h2 {
+  display: none;
+}
+.reveal .slides section.county-seat-slide p {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+.reveal .slides section.county-seat-slide img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 790px;
+  margin: 0 auto;
+  object-fit: contain;
+}
 .reveal .slides section.holdout-slide table {
   width: 88%;
   margin-left: auto;
