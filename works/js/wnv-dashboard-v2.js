@@ -700,7 +700,39 @@ function predictionTownAggregate(townId) {
   };
 }
 
+const highZeroColors = { highlighted: "#db641e", other: "#e9e5dd", unavailable: "#cbd5df" };
+let highZeroView;
+
+function predictionHighZeroView() {
+  const months = predictionSelectedMonths();
+  const totals = new Map();
+  for (const row of state.predictions) {
+    if (row.year !== state.predictionYear || !months.includes(row.month)) continue;
+    if (!Number.isFinite(row.detection_probability) || !Number.isFinite(row.WNV_positive_monthly)) continue;
+    const total = totals.get(row.Town_id) ?? { probability: 0, reports: 0, months: 0 };
+    total.probability += row.detection_probability;
+    total.reports += row.WNV_positive_monthly;
+    total.months++;
+    totals.set(row.Town_id, total);
+  }
+  const towns = new Map([...totals].filter(([, total]) => total.months === months.length));
+  const probabilities = [...towns.values()].map(total => total.probability / months.length).sort((a, b) => a - b);
+  const rank = (probabilities.length - 1) * 0.9;
+  const lower = Math.floor(rank);
+  const cutoff = probabilities.length
+    ? probabilities[lower] + (rank - lower) * (probabilities[Math.ceil(rank)] - probabilities[lower])
+    : null;
+  return { towns, cutoff, months: months.length };
+}
+
+function highZeroStatus(total) {
+  if (!total) return "unavailable";
+  return total.reports === 0 && total.probability / highZeroView.months >= highZeroView.cutoff
+    ? "highlighted" : "other";
+}
+
 function predictionColor(value,metric) {
+  if (metric==="high-zero") return highZeroColors[value];
   if (metric==="agreement") return ({"True positive":"#237b68","True negative":"#dfe5e1","False positive":"#e3a43b","False negative":"#c92535"})[value]||"#ecefeb";
   const v=Number(value||0);
   if (metric==="expected") return v<=0.1?"#fff3e8":v<=0.5?"#fdd0a2":v<=1?"#fdae6b":v<=2?"#f16913":"#a63603";
@@ -713,12 +745,19 @@ function predictionStyle(feature) {
   const aggregate=predictionFeatureAggregate(feature);
   const visible=state.county==="All"||feature.properties.County===state.county;
   const selected=state.predictionSelectedIds.has(Number(feature.properties.TOWN_ID));
-  const value=state.predictionMetric==="probability"?aggregate?.probability:state.predictionMetric==="expected"?aggregate?.expected:aggregate?.agreement;
+  const value=state.predictionMetric==="high-zero"?highZeroStatus(highZeroView.towns.get(Number(feature.properties.TOWN_ID))):state.predictionMetric==="probability"?aggregate?.probability:state.predictionMetric==="expected"?aggregate?.expected:aggregate?.agreement;
   return {fillColor:predictionColor(value,state.predictionMetric),fillOpacity:visible?0.9:0.08,color:selected?"#111":visible?"#73827d":"#bdc7c2",weight:selected?2.5:0.65,opacity:visible?1:0.25};
 }
 
 function predictionPopup(feature) {
   const a=predictionFeatureAggregate(feature);
+  if (state.predictionMetric === "high-zero") {
+    const total = highZeroView.towns.get(Number(feature.properties.TOWN_ID));
+    const heading = `<strong>${escapeHtml(feature.properties.Town)}</strong><br>${escapeHtml(predictionPeriodLabel())} ${state.predictionYear}<br>`;
+    return heading + (total
+      ? `${(100 * total.probability / highZeroView.months).toFixed(1)}% mean monthly detection probability<br>${total.reports.toLocaleString()} reported-positive samples`
+      : "Incomplete prediction or report data for the selected months");
+  }
   if (!a) return `<strong>${escapeHtml(feature.properties.Town)}</strong><br>No ${state.predictionYear} prediction`;
   return `<strong>${escapeHtml(a.town)}</strong><br>${escapeHtml(a.county)} County<br>${escapeHtml(predictionPeriodLabel())} ${state.predictionYear}<br><br>`+
     `<strong>${(a.probability*100).toFixed(1)}%</strong> seasonal detection probability<br>`+
@@ -727,7 +766,16 @@ function predictionPopup(feature) {
 
 function renderPredictionLegend() {
   let entries,title;
-  if (state.predictionMetric==="agreement") {title="Observed–predicted agreement";entries=[["True positive","#237b68"],["True negative","#dfe5e1"],["False positive","#e3a43b"],["False negative","#c92535"]];}
+  if (state.predictionMetric==="high-zero") {
+    const cutoff = highZeroView.cutoff === null ? "" : ` (≥ ${(100 * highZeroView.cutoff).toFixed(1)}%)`;
+    title = "High forecast, zero reports";
+    entries = [
+      [`Statewide top 10% of mean monthly probability${cutoff} and zero reported positives`, highZeroColors.highlighted],
+      ["Other municipalities", highZeroColors.other],
+      ["Incomplete data", highZeroColors.unavailable],
+    ];
+  }
+  else if (state.predictionMetric==="agreement") {title="Observed–predicted agreement";entries=[["True positive","#237b68"],["True negative","#dfe5e1"],["False positive","#e3a43b"],["False negative","#c92535"]];}
   else if (state.predictionMetric==="expected") {title="Expected reported-positive count";entries=[["0–0.10","#fff3e8"],["0.11–0.50","#fdd0a2"],["0.51–1.00","#fdae6b"],["1.01–2.00","#f16913"],["> 2.00","#a63603"]];}
   else {title="Seasonal detection probability";entries=[["< 10%","#e8f3f0"],["10–24%","#b9ddd4"],["25–49%","#72b7a7"],["50–74%","#2f8875"],["≥ 75%","#0e5548"]];}
   document.querySelector("#prediction-legend").innerHTML=`<strong>${title} · ${escapeHtml(predictionPeriodLabel())} ${state.predictionYear}</strong>`+entries.map(([label,color])=>`<div class="legend-row"><i class="legend-swatch" style="background:${color}"></i><span>${label}</span></div>`).join("");
@@ -847,6 +895,7 @@ function renderPrediction() {
   const clearButton=document.querySelector("#prediction-clear-town-selection");
   clearButton.hidden=state.predictionSelectedIds.size===0;
   clearButton.textContent=state.predictionSelectedIds.size>1?`Clear ${state.predictionSelectedIds.size} selected towns`:"Clear selected town";
+  if (state.predictionMetric === "high-zero") highZeroView = predictionHighZeroView();
   if (!state.predictionMap) drawPredictionMap();
   state.predictionLayer.eachLayer(layer=>layer.setPopupContent(predictionPopup(layer.feature)));
   state.predictionLayer.setStyle(predictionStyle);
